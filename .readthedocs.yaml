@@ -1,6 +1,22 @@
-version: 1 
+version: 2
 
+# Project configuration
+project:
+  name: Image Repo 
+
+# Build configuration
 build:
-  builder: sphinx
-  format: md
+  builder: markdown
+
+# Optionally, you can specify additional dependencies or requirements
+
+
+
+
+
+
+
+
+
+
 

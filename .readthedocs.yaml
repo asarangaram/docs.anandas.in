@@ -1,14 +1,10 @@
 version: 2
 
-# Project configuration
-project:
-  name: Image Repo 
 
 # Build configuration
 build:
   builder: markdown
-
-# Optionally, you can specify additional dependencies or requirements
+  image: latest
 
 
 

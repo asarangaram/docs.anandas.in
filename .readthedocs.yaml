@@ -3,7 +3,6 @@ version: 2
 
 # Build configuration
 build:
-  builder: markdown
   image: latest
 
 

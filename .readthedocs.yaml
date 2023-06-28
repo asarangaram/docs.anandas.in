@@ -1,0 +1,10 @@
+version: 2
+
+project:
+  name: Image Repo 
+  programming_language: none
+
+build:
+  builder: sphinx
+  format: md
+

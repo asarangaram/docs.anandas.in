@@ -1,8 +1,4 @@
-version: 2
-
-project:
-  name: Image Repo 
-  programming_language: none
+version: 1 
 
 build:
   builder: sphinx

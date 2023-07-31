@@ -1,6 +1,6 @@
 ---
 title: How to backup SD Card using dd
-weight: 12000
+
 ---
 
 # Using the dd utility to backup and restore the SD cards.

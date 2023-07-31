@@ -1,9 +1,8 @@
 ---
-template: home.html
-title: Home
+
+title: Today I learned on tech
 ---
 
-Welcome to Material for MkDocs.
+Welcome to this unique repository that sets itself apart from the typical tutorial sites or information repositories you might come across. Unlike those platforms, my primary focus is to provide you with valuable insights derived from personal experiences. Every piece of content presented here is the result of hands-on learning, thorough understanding, and practical utilization in real development projects.
 
-This repository is not another tutorial site or information repository. It focuses on the content I have personally learned, understood, and utilized in my own development projects. While the content may not be exhaustive, it serves as a guide and reference, directing users to other valuable resources on the web, such as official websites and Stack Overflow.
-
+Carefully curated collection, a valuable guide for similar projects.

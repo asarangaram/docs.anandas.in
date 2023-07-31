@@ -31,7 +31,7 @@ pip install pip-tools
 
 ```
 pip-compile --config=pyproject.toml requirements.in >& requirements.txt 
-
+pip install -r requirements.txt
 ```
 
 Note

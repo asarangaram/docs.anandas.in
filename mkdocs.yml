@@ -6,9 +6,6 @@ site_description: "Today I Learned (TIL) on Tech"
 repo_url: "https://github.com/asarangaram/docs.anandas.in"
 edit_uri: "edit/main/docs/"
 
-# Copyright
-copyright: Copyright &copy; 2023 Ananda S
-
 # Configuration
 theme:
   name: material
@@ -110,57 +107,57 @@ markdown_extensions:
 
 # Page tree
 nav:
-  - help:
-    - features_demo/feature_demo.md
   - linux-admin:
-    - linux-admin/index.md
-    - linux-admin/crontab.md
-    - linux-admin/manage_users.md
-    - linux-admin/ports.md
-    - linux-admin/runscript_without_password.md
-    - linux-admin/sd_card_backup_with_dd.md
+    - content/linux-admin/index.md
+    - content/linux-admin/crontab.md
+    - content/linux-admin/manage_users.md
+    - content/linux-admin/ports.md
+    - content/linux-admin/runscript_without_password.md
+    - content/linux-admin/sd_card_backup_with_dd.md
     
   - linux-develop:
-    - linux-develop/index.md
-    - linux-develop/git.md
-    - linux-develop/markdown.md
-    - linux-develop/postman.md
+    - content/linux-develop/index.md
+    - content/linux-develop/git.md
+    - content/linux-develop/markdown.md
+    - content/linux-develop/postman.md
     
-    - linux-develop/hugo.md
+    - content/linux-develop/hugo.md
   - linux-infra:
-    - linux-infra/index.md
-    - nginx: linux-infra/Nginx.md
-    - postgresql: linux-infra/postgresql.md
-    - mddm: linux-infra/mdadm.md
-    - my_sql: linux-infra/mysql.md
-    - redis: linux-infra/redis.md
-    - image_magick: linux-infra/image_magick.md
+    - content/linux-infra/index.md
+    - nginx: content/linux-infra/Nginx.md
+    - postgresql: content/linux-infra/postgresql.md
+    - mddm: content/linux-infra/mdadm.md
+    - my_sql: content/linux-infra/mysql.md
+    - redis: content/linux-infra/redis.md
+    - image_magick: content/linux-infra/image_magick.md
     
   - embedded:
-    - embedded/index.md
+    - content/embedded/index.md
     - m5_stack:
-      - embedded/m5_stack/index.md
-      - embedded/m5_stack/HomeBrew_Basics.md
-      - embedded/m5_stack/m5_stick_setup.md
-      - embedded/m5_stack/nutx.md
+      - content/embedded/m5_stack/index.md
+      - content/embedded/m5_stack/HomeBrew_Basics.md
+      - content/embedded/m5_stack/m5_stick_setup.md
+      - content/embedded/m5_stack/nutx.md
     - Raspberry Pi:
-      - embedded/Raspberry Pi/Setup_RPi.md
-      - embedded/Raspberry Pi/Lychee_on_RPi.md
-      - embedded/Raspberry Pi/Lychee_as_photo_manager.md
+      - content/embedded/Raspberry Pi/Setup_RPi.md
+      - content/embedded/Raspberry Pi/Lychee_on_RPi.md
+      - content/embedded/Raspberry Pi/Lychee_as_photo_manager.md
   - python:
-    - python/index.md
-    - python/schedule.md
-    - python/pillow.md
-    - python/using pip.md
+    - content/python/index.md
+    - content/python/schedule.md
+    - content/python/pillow.md
+    - content/python/using pip.md
     - Image Repo as a Flask Microservice:
-      - python/Image Repo as a Flask Microservice/Installation.md
-      - python/Image Repo as a Flask Microservice/first_flask_app.md
-      - python/Image Repo as a Flask Microservice/image_upload_endpoint.md
-      - python/Image Repo as a Flask Microservice/index.md
+      - content/python/Image Repo as a Flask Microservice/Installation.md
+      - content/python/Image Repo as a Flask Microservice/first_flask_app.md
+      - content/python/Image Repo as a Flask Microservice/image_upload_endpoint.md
+      - content/python/Image Repo as a Flask Microservice/index.md
   - client-app:
-    - client-app/flutter.md
+    - content/client-app/flutter.md
   - concepts:
-    - FAQ/REST.md    
-  - faq: FAQ/index.md 
-  - glossary: linux-infra/glossary.md
+    - content/FAQ/REST.md    
+  - faq: content/FAQ/index.md 
+  - glossary: content/linux-infra/glossary.md
+  - help:
+    - content/features_demo/feature_demo.md
     

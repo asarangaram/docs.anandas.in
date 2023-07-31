@@ -1,17 +1,133 @@
+# Project information
 site_name: My Learnings
 site_url: https://docs.anandas.in
 site_author: Ananda S
-site_description: "My Learnings - compiled by Ananda S"
+site_description: "Today I Learned (TIL) on Tech"
 repo_url: "https://github.com/asarangaram/docs.anandas.in"
 edit_uri: "edit/main/docs/"
 
+# Copyright
+copyright: Copyright &copy; 2023 Ananda S
+
+# Configuration
 theme:
   name: material
   custom_dir: overrides
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    # - content.code.select
+    # - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    # - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    # - navigation.instant
+    # - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
+  palette:
+    - scheme: default
+      primary: purple
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: purple
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: assets/favicon.png
+  icon:
+    logo: logo
 
+# Plugins
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - minify:
+      minify_html: true
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:materialx.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Page tree
 nav:
-  - 'index.md'
-  - Linux Tools:
+  - Linux Administration Tools:
     - 'crontab.md'
     - 'dd.md'
-    
+  - Linux Development Packages:
+    - 'crontab.md'
+    - 'dd.md'
+  - Infrastructure Tools for Linux Development:
+    - 'crontab.md'
+    - 'dd.md'
+  - Embedded Development Platforms:
+    - 'crontab.md'
+    - 'dd.md'
+  - Python Modules, Algorithms & Tricks:
+    - 'crontab.md'
+    - 'dd.md'
+  - App Development with Flutter/Dart:
+    - 'crontab.md'
+    - 'dd.md'
+  - Social Media Content Archive:
+    - 'crontab.md'
+    - 'dd.md'
+

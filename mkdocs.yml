@@ -64,6 +64,7 @@ plugins:
       separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   - minify:
       minify_html: true
+  - tags
 
 # Extensions
 markdown_extensions:
@@ -109,25 +110,57 @@ markdown_extensions:
 
 # Page tree
 nav:
-  - Linux Administration Tools:
-    - 'crontab.md'
-    - 'dd.md'
-  - Linux Development Packages:
-    - 'crontab.md'
-    - 'dd.md'
-  - Infrastructure Tools for Linux Development:
-    - 'crontab.md'
-    - 'dd.md'
-  - Embedded Development Platforms:
-    - 'crontab.md'
-    - 'dd.md'
-  - Python Modules, Algorithms & Tricks:
-    - 'crontab.md'
-    - 'dd.md'
-  - App Development with Flutter/Dart:
-    - 'crontab.md'
-    - 'dd.md'
-  - Social Media Content Archive:
-    - 'crontab.md'
-    - 'dd.md'
-
+  - help:
+    - features_demo/feature_demo.md
+  - linux-admin:
+    - linux-admin/index.md
+    - linux-admin/crontab.md
+    - linux-admin/manage_users.md
+    - linux-admin/ports.md
+    - linux-admin/runscript_without_password.md
+    - linux-admin/sd_card_backup_with_dd.md
+    
+  - linux-develop:
+    - linux-develop/index.md
+    - linux-develop/git.md
+    - linux-develop/markdown.md
+    - linux-develop/postman.md
+    
+    - linux-develop/hugo.md
+  - linux-infra:
+    - linux-infra/index.md
+    - nginx: linux-infra/Nginx.md
+    - postgresql: linux-infra/postgresql.md
+    - mddm: linux-infra/mdadm.md
+    - my_sql: linux-infra/mysql.md
+    - redis: linux-infra/redis.md
+    - image_magick: linux-infra/image_magick.md
+    
+  - embedded:
+    - embedded/index.md
+    - m5_stack:
+      - embedded/m5_stack/index.md
+      - embedded/m5_stack/HomeBrew_Basics.md
+      - embedded/m5_stack/m5_stick_setup.md
+      - embedded/m5_stack/nutx.md
+    - Raspberry Pi:
+      - embedded/Raspberry Pi/Setup_RPi.md
+      - embedded/Raspberry Pi/Lychee_on_RPi.md
+      - embedded/Raspberry Pi/Lychee_as_photo_manager.md
+  - python:
+    - python/index.md
+    - python/schedule.md
+    - python/pillow.md
+    - python/using pip.md
+    - Image Repo as a Flask Microservice:
+      - python/Image Repo as a Flask Microservice/Installation.md
+      - python/Image Repo as a Flask Microservice/first_flask_app.md
+      - python/Image Repo as a Flask Microservice/image_upload_endpoint.md
+      - python/Image Repo as a Flask Microservice/index.md
+  - client-app:
+    - client-app/flutter.md
+  - concepts:
+    - FAQ/REST.md    
+  - faq: FAQ/index.md 
+  - glossary: linux-infra/glossary.md
+    

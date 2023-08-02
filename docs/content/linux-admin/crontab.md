@@ -7,14 +7,19 @@ title: crontab
 `crontab` is a command used in Unix-like operating systems to manage cron jobs. A cron job is a task or command that is scheduled to run at specific intervals automatically. The `crontab` command is used to create, view, edit, and delete cron jobs for a particular user.
 
 ## common commands
-* `crontab -e`: Edit the user's `crontab` file.
-* `crontab -l`: View the user's current `crontab` file.
-* ❗`crontab -r`: Remove the user's `crontab` file (deletes all cron jobs for that user).
-* `crontab -u <username> -e`: Edit the `crontab` file of a specific user (requires appropriate permissions).
+
+|                            | Purpose                                                                        |
+|---------------------------:|:--------------------------------------------------------------------------------|
+|               `crontab -l` | View the user's current `crontab` file.                                        |
+|               `crontab -e` | Edit the user's `crontab` file                                                 |
+|               `crontab -r` | Remove the user's `crontab` file (deletes all cron jobs for that user).        |
+| `crontab -u <username> -e` | Edit the `crontab` file of a specific user (requires appropriate permissions). |
+
 
 ## Scheduling syntax
 The syntax consists of five fields representing minute, hour, day of the month, month, and day of the week.
-we can use 
+we can use
+
 * wildcard * refers to every ?? (based on field location)
 * values 10, 15 etc 
     * Minute (0-59)

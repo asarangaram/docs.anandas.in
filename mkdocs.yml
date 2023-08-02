@@ -108,22 +108,24 @@ markdown_extensions:
 # Page tree
 nav:
   - linux-admin:
-    - content/linux-admin/index.md
     - content/linux-admin/crontab.md
     - content/linux-admin/manage_users.md
     - content/linux-admin/ports.md
     - content/linux-admin/runscript_without_password.md
     - content/linux-admin/sd_card_backup_with_dd.md
-    
+    - content/linux-admin/mermaid.md
+    - content/linux-admin/mime.md
+    - content/linux-admin/notify-send.md
+    - content/linux-admin/packages.md
+    - content/linux-admin/vscode.md
+ 
   - linux-develop:
-    - content/linux-develop/index.md
     - content/linux-develop/git.md
     - content/linux-develop/markdown.md
     - content/linux-develop/postman.md
     
     - content/linux-develop/hugo.md
   - linux-infra:
-    - content/linux-infra/index.md
     - nginx: content/linux-infra/Nginx.md
     - postgresql: content/linux-infra/postgresql.md
     - mddm: content/linux-infra/mdadm.md
@@ -132,7 +134,6 @@ nav:
     - image_magick: content/linux-infra/image_magick.md
     
   - embedded:
-    - content/embedded/index.md
     - m5_stack:
       - content/embedded/m5_stack/index.md
       - content/embedded/m5_stack/HomeBrew_Basics.md
@@ -143,7 +144,6 @@ nav:
       - content/embedded/Raspberry Pi/Lychee_on_RPi.md
       - content/embedded/Raspberry Pi/Lychee_as_photo_manager.md
   - python:
-    - content/python/index.md
     - content/python/schedule.md
     - content/python/pillow.md
     - content/python/using pip.md

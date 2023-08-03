@@ -118,7 +118,8 @@ nav:
     - content/linux-admin/notify-send.md
     - content/linux-admin/packages.md
     - content/linux-admin/vscode.md
- 
+    - content/linux-admin/fdisk.md
+    - content/linux-develop/vim.md
   - linux-develop:
     - content/linux-develop/git.md
     - content/linux-develop/markdown.md
@@ -147,17 +148,16 @@ nav:
     - content/python/schedule.md
     - content/python/pillow.md
     - content/python/using pip.md
+    - content/python/scripts/validate_password.md
     - Image Repo as a Flask Microservice:
       - content/python/Image Repo as a Flask Microservice/Installation.md
       - content/python/Image Repo as a Flask Microservice/first_flask_app.md
       - content/python/Image Repo as a Flask Microservice/image_upload_endpoint.md
       - content/python/Image Repo as a Flask Microservice/index.md
-  - client-app:
-    - content/client-app/flutter.md
   - concepts:
     - content/FAQ/REST.md    
   - faq: content/FAQ/index.md 
   - glossary: content/linux-infra/glossary.md
   - help:
     - content/features_demo/feature_demo.md
-    
+ 

@@ -48,20 +48,20 @@ markupsafe==2.1.3
     #   mkdocstrings
 mergedeep==1.3.4
     # via mkdocs
-mkdocs==1.5.1
+mkdocs==1.5.2
     # via
     #   -r requirements.in
     #   mkdocs-autorefs
     #   mkdocs-material
     #   mkdocs-minify-plugin
     #   mkdocstrings
-mkdocs-autorefs==0.4.1
+mkdocs-autorefs==0.5.0
     # via mkdocstrings
 mkdocs-material==9.1.21
     # via -r requirements.in
 mkdocs-material-extensions==1.1.1
     # via mkdocs-material
-mkdocs-minify-plugin==0.7.0
+mkdocs-minify-plugin==0.7.1
     # via -r requirements.in
 mkdocstrings[python]==0.22.0
     # via

@@ -3,8 +3,9 @@ title: MySQL
 weight: 116000
 ---
 
-{{% button href="https://www.mysql.com/" icon="fas fa-external-link-alt" icon-position="right" %}}MySQL Home{{% /button %}}
-{{% button href="https://www.mysql.com/" icon="fas fa-external-link-alt" icon-position="right" %}}MySQL Home{{% /button %}}
+<div style="text-align: right"> your-text-here </div>
+
+[:fontawesome-solid-arrow-up-right-from-square: MySQL Documentation  ](https://dev.mysql.com/doc){ .md-button .md-button--primary }
 
 ### How to install and configure?
 
@@ -75,14 +76,37 @@ EXIT;
 ### How to make sure it is secure and can be accessed only from localhost?
 
 by default, bind-address is set to 127.0.0.1. It means, it listens only localhost.
-If we maintain the db in a maching and access it from another, it may be required. For current use case, there is no such need.
+If we maintain the db in a machine and access it from another, it may be required. For current use case, there is no such need.
 
-# How to create an user and give permission to a database?
+### How to create an user and give permission to a database?
 
+Login as root
 ```
-CREATE USER 'clapps'@'localhost' IDENTIFIED BY <pw>
+mysql -u root -p
+```
+
+If user doesn't exists, create.
+```
+CREATE USER 'clapps'@'localhost' IDENTIFIED BY <pw>;
+```
+If data base doesn't exists, create
+```
 CREATE DATABASE CLAPPS_v1;
+```
+to give complete access, 
+```
 GRANT ALL PRIVILEGES ON CLAPPS_v1.* TO 'clapps'@'localhost';
+```
+
+If read only access is enough for a user, use SELECT instead of ALL
+```
+GRANT SELECT PRIVILEGES ON CLAPPS_v1.* TO 'clapps'@'localhost';
+```
+
+at the end,
+```
+FLUSH PRIVILEGES;
+EXIT;
 ```
 
 ### How to migrate the db from one machine to another?
@@ -102,6 +126,27 @@ Additionally,
 > Ensure compatibility between the MySQL versions on both systems. If the MySQL versions differ, you may need to perform additional steps, such as exporting and importing data in a compatible format or upgrading the MySQL server on the destination system.\*\*\*\*
 
 `SHOW DATABASES;` gives the database names of the given user.
+
+### Can multiple users access the database simultaneously?
+
+Set up the following.
+
+### Transaction Isolation Levels
+
+The default isolation level is "REPEATABLE READ," which may not be suitable for concurrent operations. 
+Change it into "READ COMMITTED"
+```
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+```
+
+### Set Concurrent Connections
+
+edit `sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf` and update `max_connections`.
+
+### Locking mechanism
+It is better to setup a locking mechanism for update/insert/delete, to avoid conflict. 
+
+One method is to use a table, and update the entry.
 
 ### How to change the table?
 

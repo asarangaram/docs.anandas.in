@@ -107,6 +107,8 @@ markdown_extensions:
 
 # Page tree
 nav:
+  - about:
+    - index.md
   - linux-admin:
     - content/linux-admin/crontab.md
     - content/linux-admin/manage_users.md
@@ -133,6 +135,7 @@ nav:
     - my_sql: content/linux-infra/mysql.md
     - redis: content/linux-infra/redis.md
     - image_magick: content/linux-infra/image_magick.md
+    - image_utils: content/linux-infra/image_utilities.md
     
   - embedded:
     - m5_stack:
@@ -149,12 +152,14 @@ nav:
     - content/python/pillow.md
     - content/python/using pip.md
     - content/python/scripts/validate_password.md
+    - content/python/scripts/single_instance_lock.md
     - Image Repo as a Flask Microservice:
       - content/python/Image Repo as a Flask Microservice/Installation.md
       - content/python/Image Repo as a Flask Microservice/first_flask_app.md
       - content/python/Image Repo as a Flask Microservice/image_upload_endpoint.md
       - content/python/Image Repo as a Flask Microservice/index.md
   - concepts:
+    - content/concepts/image_dithering.md
     - content/FAQ/REST.md    
   - faq: content/FAQ/index.md 
   - glossary: content/linux-infra/glossary.md

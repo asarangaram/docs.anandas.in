@@ -41,3 +41,9 @@ Note
     requirement.in instead of requirement.txt?
 
 ### Run locally
+
+```
+mkdocs serve
+mkdocs build
+
+```

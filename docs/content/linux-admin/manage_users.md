@@ -18,6 +18,6 @@ These commands help **to create and configure users** on Linux. (Tested on Ubunt
 | to copy ssh key to remote machine | `ssh-copy-id`                                  | `ssh-copy-id username@remote_host`                                                                                                      |
 | To create home directory          | `sudo mkhomedir_helper <user>`                 |
 
-{{% notice tip %}} setup ssh public key for the computer from where you access. If you are creating second account that you want to access from same account of the client, the quicker (but hacking ) way is to copy the public key from the current user into the new user account and change the permission before logging in with newuser. This will simplify some annoying steps. once you give sudo permission to someone, they either need to logout and log in.; reboot is optional.
+!!! note
+	setup ssh public key for the computer from where you access. If you are creating second account that you want to access from same account of the client, the quicker (but hacking ) way is to copy the public key from the current user into the new user account and change the permission before logging in with newuser. This will simplify some annoying steps. once you give sudo permission to someone, they either need to logout and log in.; reboot is optional.
 
-{{% /notice %}}

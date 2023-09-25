@@ -54,6 +54,19 @@ theme:
   favicon: assets/favicon.png
   icon:
     logo: logo
+    admonition:
+      note: fontawesome/solid/note-sticky
+      abstract: fontawesome/solid/book
+      info: fontawesome/solid/circle-info
+      tip: fontawesome/solid/bullhorn
+      success: fontawesome/solid/check
+      question: fontawesome/solid/circle-question
+      warning: fontawesome/solid/triangle-exclamation
+      failure: fontawesome/solid/bomb
+      danger: fontawesome/solid/skull
+      bug: fontawesome/solid/robot
+      example: fontawesome/solid/flask
+      quote: fontawesome/solid/quote-left
 
 # Plugins
 plugins:
@@ -65,6 +78,7 @@ plugins:
 
 # Extensions
 markdown_extensions:
+  - admonition
   - abbr
   - admonition
   - attr_list
@@ -90,8 +104,8 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.magiclink:
       repo_url_shorthand: true
-      user: squidfunk
-      repo: mkdocs-material
+      user: asarangaram
+      repo: docs.anandas.in
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences:
@@ -126,7 +140,7 @@ nav:
     - content/linux-develop/git.md
     - content/linux-develop/markdown.md
     - content/linux-develop/postman.md
-    
+    - content/linux-admin/tmux.md
     - content/linux-develop/hugo.md
   - linux-infra:
     - nginx: content/linux-infra/Nginx.md
@@ -160,9 +174,9 @@ nav:
       - content/python/Image Repo as a Flask Microservice/index.md
   - concepts:
     - content/concepts/image_dithering.md
-    - content/FAQ/REST.md    
+    - content/FAQ/REST.md 
+    - content/concepts/MkDocs.md   
   - faq: content/FAQ/index.md 
   - glossary: content/linux-infra/glossary.md
   - help:
     - content/features_demo/feature_demo.md
- 

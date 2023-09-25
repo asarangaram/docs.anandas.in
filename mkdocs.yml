@@ -140,7 +140,7 @@ nav:
     - content/linux-develop/git.md
     - content/linux-develop/markdown.md
     - content/linux-develop/postman.md
-    - content/linux-admin/tmux.md
+    - content/linux-develop/tmux.md
     - content/linux-develop/hugo.md
   - linux-infra:
     - nginx: content/linux-infra/Nginx.md

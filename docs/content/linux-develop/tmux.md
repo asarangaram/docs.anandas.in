@@ -50,3 +50,8 @@ add the following into the tmux config file.
 set -g default-command /bin/zsh 
 set -g default-shell /bin/zsh
 ```
+
+
+## References
+https://uare.github.io/2021/setup-tmux-on-mac-os
+

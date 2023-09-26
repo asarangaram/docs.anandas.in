@@ -1,5 +1,6 @@
 mkdocs
 mkdocstrings[python]
 markdown-include
+mkdocs-exclude
 mkdocs-material
 mkdocs-minify-plugin

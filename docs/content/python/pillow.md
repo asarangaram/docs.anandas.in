@@ -2,6 +2,20 @@
 `pillow` is the fork for PIL (Python Image Library) that has been discontinued from 2011. Pillow supports many image file formats.
 
 
+## Working with HIEC
+
+```bash
+pip3 install pillow-heif
+```
+    
+```python
+from PIL import Image
+from pillow_heif import register_heif_opener
+    
+register_heif_opener()
+    
+image = Image.open('image.heic')
+```
 
 ## Tutorials:
 

@@ -3,10 +3,9 @@ title: MySQL
 weight: 116000
 ---
 
-<div style="text-align: right"> your-text-here </div>
-
 [:fontawesome-solid-arrow-up-right-from-square: MySQL Documentation  ](https://dev.mysql.com/doc){ .md-button .md-button--primary }
 
+## Setting up
 ### How to install and configure?
 
 #### install and start the service
@@ -148,7 +147,77 @@ It is better to setup a locking mechanism for update/insert/delete, to avoid con
 
 One method is to use a table, and update the entry.
 
-### How to change the table?
+## Basics
+Assuming the database is setup, to interact with it, we need to know the following basics.
+
+Remember CRUD, when reading each section below
+
+### Top level
+There are databases and user authorized to use.
+
+#### DATABASE
+C. `CREATE DATABASE <name>;`
+R. `USE <name>;`
+U. - 
+D. `DROP DATABASE <name>;`
+L. `SHOW DATABASES;`
+
+* There is nothing to alter within SQL. The properties of the tables are handled by configrations and other external tools. Understand more about **Configuration File**, **Command-Line Option** and **MySQL Admin Tools** to change anything on the databases.
+*
+##### Core Databases
+
+There are four core databases that are integral to the operation of MySQL.
+1.  `mysql`: contains user accounts, privileges, and configuration settings. It's used for user authentication and authorization.
+2.  `sys`: performance-related insights and monitoring capabilities for the MySQL server.   
+3.   `information_schema`: metadata information about the MySQL server, including details about databases, tables, columns, indexes, and privileges.
+4.   `performance_schema`: performance-related metrics and instrumentation data, allowing you to monitor and analyze server performance.
+
+Except `user` table in `mysql` database, none are required to be understood for basic operations. 
+
+#### USER (table: `mysql.user`)
+C. `CREATE USER <name>;`
+R. `SELECT * FROM mysql.user WHERE user = 'username' AND host = 'host';`
+U. `ALTER USER 'username'@'host'...` – Refer below 
+D. `DROP USER <name>`
+L. `SELECT user, host FROM mysql.user;`, `SHOW GRANTS`
+
+**Notes on ALTER USER**
+* `user` is always referred along with host
+* As `user` is maintained in a table, it is possible to alter the columns as required, some required administrative privileges. 
+    * `ALTER USER 'username'@'host' WITH MAX_CONNECTIONS 100;`
+    * `ALTER USER 'username'@'host' IDENTIFIED WITH 'auth_plugin';`
+    * `ALTER USER 'username'@'host' PASSWORD EXPIRE INTERVAL 180 DAY;`
+* There are few special commands
+    * `SET PASSWORD FOR 'username'@'host' = PASSWORD('newpassword');`
+    * `RENAME USER 'olduser'@'oldhost' TO 'newuser'@'newhost';`
+    * `GRANT privilege_type ON database_name.table_name TO 'username'@'host';`
+    * `REVOKE privilege_type ON database_name.table_name FROM 'username'@'host';`
+* One of the important command to know is `FLUSH PRIVILEGES;`
+    * once the user is alterred, thje changes take effect immediately within the current session. but will not be visible to other sessions until you restart the MySQL server. To ensure that the  changes applied globally, **it's recommended to run `FLUSH PRIVILEGES` after making any changes to user accounts or privileges**.
+   
+### On Database
+There are many many things inside a database other than tables. In basic level, you should know TABLE, INDEX and VIEW. 
+
+C. `CREATE TABLE | INDEX | VIEW | PROCEDURE | FUNCTION | TRIGGER | EVENT`
+R.  - 
+U. `ALTER TABLE | VIEW |  | TRIGGER | EVENT` `CREATE OR REPLACE  PROCEDURE | FUNCTION`
+D. `CREATE TABLE | INDEX | VIEW | PROCEDURE | FUNCTION | TRIGGER | EVENT`
+
+* Anything that can be created can also be dropped
+* `INDEX` can't be alterred.
+* There are few more ALTER commands, `ALTER SERVER | LOGFILE GROUP | INSTANCE` which are for intermediate or advance level.
+* REPLACE just drops and recreates, not really to **UPDATE**
+
+### On Table
+
+C. `INSERT 
+
+#### INSERT
+
+#### UPDATE
+
+#### SELECT
+Understanding `select` is most crucial.
 
 ### This yet to learn
 

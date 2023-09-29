@@ -64,3 +64,59 @@ Set fileformat to unix:
 ```
 :set list
 ```
+
+## VIM Delete lines
+Source: [https://linuxize.com/post/vim-delete-line/](https://linuxize.com/post/vim-delete-line/)
+```
+The command to delete a line in Vim is dd.
+To delete multiple lines at once, Type 5dd
+Delete a range of lines  :[start],[end]d
+    . (dot) - The current line.
+    $ - The last line.
+    % - All lines.
+
+    :.,$d - From the current line to the end of the file.
+    :.,1d - From the current line to the beginning of the file.
+    10,$d - From the 10th line to the end of the file.
+
+    :g/<pattern>/d
+
+:g/foo/d - Delete all lines containing the string “foo”. It also removes line where “foo” is embedded in larger words, such as “football”.
+:g!/foo/d - Delete all lines not containing the string “foo”.
+:g/^#/d - Remove all comments from a Bash script. The pattern ^# means each line beginning with #.
+:g/^$/d - Remove all blank lines. The pattern ^$ matches all empty lines.
+:g/^\s*$/d - Remove all blank lines. Unlike the previous command, this also removes the blank lines that have zero or more whitespace characters (\s*).
+```
+
+# VIM Macro
+
+## Record the macro
+
+```
+    q<register><commands>q
+         <register> - a-z
+
+```
+
+## View macro 
+
+```
+:reg h
+```
+
+## Copy into different macro (not tried)
+
+First, copy the macro content and paste it to an empty line in the buffer. Then replace special characters with their Vim representation by using Ctrl+v+<ESC> and Ctrl+v+<ENTER> in Insert mode. Then copy the macro content in the desired register, for example, register h with this command:
+
+```
+"hy$
+
+```
+## Replay
+
+``` 
+@<register>
+@@ - repeat last played macro
+```
+
+[Reference](https://www.redhat.com/sysadmin/use-vim-macros)

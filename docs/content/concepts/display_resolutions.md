@@ -1,6 +1,6 @@
 # Display Resolutions
 
-```
+```text
 1280x720 — HD / 720p. 
 1920x1080 — FHD (Full HD) / 1080p. 
 2560x1440 — QHD/WQHD (Quad HD) / 1440p. 

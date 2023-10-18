@@ -51,7 +51,19 @@ set -g default-command /bin/zsh
 set -g default-shell /bin/zsh
 ```
 
+## Installation
+to get latest version, use 
+```
+./configure && make
+```
+If you get the error, `configure: error: "libevent not found"`
+```
+sudo apt install libevent-dev
+```
 
+configure: error: "curses not found"
+
+sudo apt install ncurses-dev
 ## References
 https://uare.github.io/2021/setup-tmux-on-mac-os
 

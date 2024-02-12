@@ -82,6 +82,9 @@ plugins:
         - content/concepts/ai_ml_basics/cognitive_functions.md
         - content/concepts/ai_ml_basics/tasks.md  
         - content/concepts/ai_ml_basics/ann.md
+  - mkdocs-jupyter:
+      execute: True
+      include_source: True
 
 # Extensions
 markdown_extensions:
@@ -200,4 +203,18 @@ nav:
   - glossary: content/linux-infra/glossary.md
   - help:
     - content/features_demo/feature_demo.md
-
+  - general:
+    - content/concepts/display_resolutions.md
+    - content/general/online_tools.md
+    - content/general/quotes.md
+    - content/general/repositories.md
+    - content/general/software.md
+    - content/linux-develop/terminal_pagers.md
+    - content/linux-infra/certbot.md
+    - content/linux-infra/exif_tools.md
+    - content/mac-admin/ditto.md
+    - content/mac-admin/export_photos.md
+    - content/mac-admin/mac_security.md
+    - content/python/cv2.md
+    - content/python/heic_image.md
+    - content/python/notebooks/test.ipynb

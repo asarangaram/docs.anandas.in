@@ -4,3 +4,5 @@ markdown-include
 mkdocs-exclude
 mkdocs-material
 mkdocs-minify-plugin
+mkdocs-jupyter
+nose2

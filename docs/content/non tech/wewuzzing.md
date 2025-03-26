@@ -1,0 +1,1 @@
+When a person promotes the lie that their particular race or ethnicity had a far more glorious or technologically advanced past than what is demonstrable, or worse, appropriates the cultural achievements of other races.

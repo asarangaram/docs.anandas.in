@@ -249,7 +249,7 @@ Understanding `select` is most crucial.
 
 ### O𝗿𝗱𝗲𝗿 𝗶𝗻 𝘄𝗵𝗶𝗰𝗵 𝗦𝗤𝗟 𝗾𝘂𝗲𝗿𝗶𝗲𝘀 𝗿𝘂𝗻.
 
-![[Pasted image 20231018125142.png]]
+![[images/Pasted image 20231018125142.png]]
 ### Query Optimizer
 
 𝗤𝘂𝗲𝗿𝘆 𝗢𝗽𝘁𝗶𝗺𝗶𝘇𝗲𝗿 determines 𝘁𝗵𝗲 𝗺𝗼𝘀𝘁 𝗲𝗳𝗳𝗶𝗰𝗶𝗲𝗻𝘁 𝘄𝗮𝘆 to execute a given SQL query by finding the best execution plan. The query optimizer works by taking the SQL query as input and analyzing it to determine how best to execute it. The first step is to parse the SQL query and create a syntax tree. The optimizer then analyzes the syntax tree to determine how to run the query.

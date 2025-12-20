@@ -6,7 +6,7 @@ Use the "\%\%ai" magic command to specify a model chat with the model using a na
 ## \%\%latex
 Helps you to display LaTeX code in Jupyter Notebook
 
-![[Pasted image 20231018123727.png]]
+![[images/Pasted image 20231018123727.png]]
 
 
 %%sql

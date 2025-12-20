@@ -1,0 +1,29 @@
+stateDiagram-v2
+    [*] --> Unchecked
+
+    %% Always start with search
+    Unchecked --> Guesses : vectorSearchResults()
+
+    Guesses --> found : [hasGuesses]
+    Guesses --> notFound : [noGuesses]
+
+    %% Not found path
+    notFound --> Guesses : vectorSearchResults()
+    notFound --> NotAFace : markNotAFace()
+    notFound --> unknown : markAsUnknown()
+    notFound --> confirmed : Register()
+
+    %% Unknown path
+    unknown --> Guesses : vectorSearchResults()
+    unknown --> confirmed : Register()
+    unknown --> NotAFace : markNotAFace()
+
+    %% Confirmed corrections
+    confirmed --> notFound : RemoveConfirmation()
+
+    %% Found path
+    found --> confirmed : confirmFace()
+    found --> notFound : rejectFace()
+
+    %% Correction path
+    NotAFace --> Unchecked : isAFace()

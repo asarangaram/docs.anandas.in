@@ -28,3 +28,55 @@ rm /usr/lib/systemd/system/[servicename] # and symlinks that might be related
 systemctl daemon-reload
 systemctl reset-failed
 ```
+
+
+## Example services
+
+### Avahi service
+
+```
+[Unit]
+Description= Avahi Broadcast Service
+After=network.target
+
+[Service]
+Type=simple
+User=anandas
+Group=anandas
+# this service ignores WorkingDirecotyr
+WorkingDirectory=/
+
+# Activate the virtual environment and run Celery
+ExecStart=/bin/bash -c 'avahi-publish-service -s "server100@cloudonlapapps" _http._tcp 5000 "CL Image Repo Service" '
+
+# Restart automatically if the service fails
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Celery Service
+
+```
+[Unit]
+Description=Celery Worker Service
+After=network.target
+
+[Service]
+Type=simple
+User=anandas
+Group=anandas
+WorkingDirectory=/home/anandas/app/media_repo
+
+# Activate the virtual environment and run Celery
+ExecStart=/bin/bash -c 'source /home/anandas/app/media_repo/.venv/bin/activate && celery -A src.celery_worker.celery worker --loglevel=info --concurrency=4'
+
+# Restart automatically if the service fails
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+```

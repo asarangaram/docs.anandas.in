@@ -1,15 +1,15 @@
 ## Manage Users 
-| Purpose  |  Command | Remarks|
-|---|---|---|
-| create new user | `useradd` | you can create user directory (`-m`, `-d`), `useradd --help`|
-| give sudo permission  |  `usermod` |  sudo usermod -aG sudo <user> |
-|  set password |  `passwd` | If useradd didn't prompt with password, set password with this command  |
-| list users | `cut -d: -f1 /etc/passwd` | |
-| list users with sudo permission | `grep '^sudo:.*$' /etc/group `\|` cut -d: -f4` | |
-| changing the default shell | `chsh` | |
-| to generate ssh key | `ssh-keygen` | use `ssh-keygen -t rsa -b 2048`|
-| to copy ssh key to remote machine | `ssh-copy-id` | `ssh-copy-id username@remote_host` |
-| To create home directory | `sudo mkhomedir_helper <user>` | 
+| Purpose                           | Command                                        | Remarks                                                                |
+| --------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------- |
+| create new user                   | `useradd`                                      | you can create user directory (`-m`, `-d`), `useradd --help`           |
+| give sudo permission              | `usermod`                                      | sudo usermod -aG sudo <user>                                           |
+| set password                      | `passwd`                                       | If useradd didn't prompt with password, set password with this command |
+| list users                        | `cut -d: -f1 /etc/passwd`                      |                                                                        |
+| list users with sudo permission   | `grep '^sudo:.*$' /etc/group `\|` cut -d: -f4` |                                                                        |
+| changing the default shell        | `chsh`                                         |                                                                        |
+| to generate ssh key               | `ssh-keygen`                                   | use `ssh-keygen -t rsa -b 2048`<br>or<br>`ssh-keygen -t ed25519`       |
+| to copy ssh key to remote machine | `ssh-copy-id`                                  | `ssh-copy-id username@remote_host`                                     |
+| To create home directory          | `sudo mkhomedir_helper <user>`                 |                                                                        |
 
 
 Things to do while creating new users:

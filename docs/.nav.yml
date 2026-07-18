@@ -1,0 +1,15 @@
+nav:
+  - index.md
+  - tags.md
+  - content/linux-admin
+  - content/linux-develop
+  - content/linux-infra
+  - content/embedded
+  - content/python
+  - content/client-app
+  - content/concepts
+  - content/mac-admin
+  - content/FAQ
+  - content/non tech
+  - content/general
+  - content/features_demo

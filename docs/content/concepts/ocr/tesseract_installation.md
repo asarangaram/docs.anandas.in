@@ -1,3 +1,9 @@
+---
+title: Tesseract installation
+---
+
+# Tesseract installation
+
 ### Install Engine
 Installing tesseract binary seems straighforward. Followed the proceedure given tesseract's [github](https://tesseract-ocr.github.io/tessdoc/Compiling-–-GitInstallation.html), title "Installing With Autoconf Tools". 
 

@@ -1,3 +1,9 @@
+---
+title: Jupyter Notebook
+---
+
+# Jupyter Notebook
+
 ## Magic Commands ([Source](https://x.com/Sumanth_077/status/1713214525401641306?s=20))
 ## \%\%ai
 Use the "\%\%ai" magic command to specify a model chat with the model using a natural language prompt.
@@ -6,7 +12,7 @@ Use the "\%\%ai" magic command to specify a model chat with the model using a na
 ## \%\%latex
 Helps you to display LaTeX code in Jupyter Notebook
 
-![[images/Pasted image 20231018123727.png]]
+![The %%latex magic command](../../images/Pasted image 20231018123727.png)
 
 
 %%sql

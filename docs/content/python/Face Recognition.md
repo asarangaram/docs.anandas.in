@@ -1,3 +1,9 @@
+---
+title: Face Recognition
+---
+
+# Face Recognition
+
 ## APIs to build database
 
 | End point                    | Description                                                                                                                                                                                                                                                           |

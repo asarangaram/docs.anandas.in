@@ -1,3 +1,9 @@
+---
+title: MkDocs
+---
+
+# MkDocs
+
 This documentation is being created using MkDocs with the theme "Material for MkDocs".
 
 Few extensions worth knowing:

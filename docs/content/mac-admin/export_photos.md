@@ -1,3 +1,9 @@
+---
+title: Export photos
+---
+
+# Export photos
+
 Tip while automating Photos App
 
 Export Photo with Album name as Folder name

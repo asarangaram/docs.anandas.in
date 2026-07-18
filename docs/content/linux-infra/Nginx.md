@@ -5,7 +5,7 @@ weight: 112000
 
 ## Why apache need to be removed?
 
-I use `nginx` as webserver. By default, the `apache` is installed and listens the ports required. So, we need to disable it and install `nginx`. While disabling the `a111pache` service is sufficient, I found that sometime the software update tries to restart the service. As I couldn't find an easier way to stop the auto start of `apache` now and then and conflict with `nginx` setup, I remove `apache` completely and then install. Anyways I will not use `apache` and Nginx together.
+I use `nginx` as webserver. By default, the `apache` is installed and listens the ports required. So, we need to disable it and install `nginx`. While disabling the `apache` service is sufficient, I found that sometime the software update tries to restart the service. As I couldn't find an easier way to stop the auto start of `apache` now and then and conflict with `nginx` setup, I remove `apache` completely and then install. Anyways I will not use `apache` and Nginx together.
 
 ## Few utility commands, useful at this stage.
 

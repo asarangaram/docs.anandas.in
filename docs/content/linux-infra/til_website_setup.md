@@ -168,12 +168,31 @@ git remote add origin git@<LAN_HOSTNAME>:<USER>/til.git
 git push -u origin main
 ```
 
-Point the site at its new home in `mkdocs.yml`:
+## 5a. Two builds: public and internal
+
+The edit button must not appear on the public site. Rather than hiding it with
+scripting, the site is built twice.
+
+`mkdocs.yml` (public) carries no `repo_url` and no `edit_uri`, so Material
+renders no edit button and no repository link.
+
+`mkdocs.internal.yml` adds them:
 
 ```yaml
+INHERIT: ./mkdocs.yml
+
 repo_url: "https://<LAN_HOSTNAME>/<USER>/til"
 edit_uri: "_edit/main/docs/"
 ```
+
+```bash
+mkdocs build --strict                             # public  -> VPS
+mkdocs build --strict -f mkdocs.internal.yml      # internal -> LAN
+```
+
+The public output contains no reference to the Forgejo hostname and no edit
+affordance. Editing is reachable only from the internal site, which is served
+on the LAN in step 8a.
 
 ## 6. Prepare the VPS to receive
 
@@ -261,10 +280,15 @@ while read -r _ new ref; do
     cd /srv/build
 
     /srv/build/.venv/bin/pip install -q -r requirements.in
-    /srv/build/.venv/bin/mkdocs build --strict -d /srv/build/site
 
+    # Public build -> VPS. No repo_url, so no edit button.
+    /srv/build/.venv/bin/mkdocs build --strict -d /srv/build/site
     tar -cz -C /srv/build/site . | \
         ssh -i /home/git/.ssh/deploy_vps -p <SSH_PORT> deploy@<VPS_HOST>
+
+    # Internal build -> served on the LAN, with the edit button.
+    /srv/build/.venv/bin/mkdocs build --strict \
+        -f mkdocs.internal.yml -d /var/www/til-internal
 done
 ```
 
@@ -313,6 +337,28 @@ sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d til.anandas.in
 sudo certbot renew --dry-run
 ```
+
+## 8a. Serve the internal site on the LAN
+
+On the intranet server, install nginx and add a vhost bound to the LAN/VPN
+address only:
+
+```nginx
+server {
+    listen <LAN_OR_VPN_ADDRESS>:80;
+    server_name <LAN_HOSTNAME_SITE>;
+
+    root /var/www/til-internal;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+
+This is the copy with edit buttons. Use it when writing; use the public URL
+when reading.
 
 ## 9. Sveltia CMS
 
@@ -474,6 +520,7 @@ sudo -u git forgejo dump -c /etc/forgejo/app.ini -f <COLD_STORAGE_PATH>/forgejo-
 | --- | --- |
 | Forgejo exposure | LAN / VPN only, never published |
 | VPS contents | static files, nginx, certbot. No git, no Python, no secrets |
+| Edit affordance | public build has no `repo_url`, so no edit button and no Forgejo hostname anywhere in the output |
 | VPS inbound | `<SSH_PORT>`, 80, 443 only |
 | Deploy key | `command="/usr/local/bin/deploy-til"`, no pty, no forwarding |
 | Connection direction | LAN initiates everything. The VPS cannot reach inward |

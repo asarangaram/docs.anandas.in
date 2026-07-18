@@ -1,0 +1,7 @@
+# Internal build: adds the repository link and the "edit this page" button.
+# Served on the LAN/VPN only. The public build (mkdocs.yml) has no repo_url,
+# so Material renders no edit button and no header repo link at all.
+INHERIT: ./mkdocs.yml
+
+repo_url: "https://<LAN_HOSTNAME>/<USER>/til"
+edit_uri: "_edit/main/docs/"

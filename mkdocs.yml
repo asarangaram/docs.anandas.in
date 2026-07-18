@@ -120,10 +120,10 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.keys
-  - pymdownx.magiclink:
-      repo_url_shorthand: true
-      user: asarangaram
-      repo: docs.anandas.in
+  # Auto-links bare URLs. Repository shorthand (#123, @user) is deliberately
+  # not configured: the repository is now a private Forgejo instance on the
+  # LAN, so shorthand would render links no public visitor could follow.
+  - pymdownx.magiclink
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences:

@@ -597,6 +597,23 @@ build reports success. Use `rsync -a --delete` into the existing directory.
 needs its own key. A per-repo deploy key without write access is enough, and
 is preferable to reusing a personal account key.
 
+**`systemctl enable --now` does not restart a running service.** After
+rotating the webhook secret, the unit file, `pass` and the Forgejo webhook
+all held the new value while the live process still ran with the old one
+from an hour earlier — so every delivery failed with `bad signature`, and it
+looked like a `pass` problem. `is-active` reported `active` throughout and
+the unit file read correctly; the only way to see it was the running
+process's own environment:
+
+```bash
+tr '\0' '\n' < /proc/$(systemctl --user show <unit> -p MainPID --value)/environ \
+  | grep <VAR>
+```
+
+Use `systemctl --user restart <unit>` after changing a unit, not `enable
+--now`. Config files describe intent; a long-running process holds whatever
+it started with.
+
 **`rsync --delete-excluded` deletes excluded files from the destination.**
 It is not "`--delete`, but safer about excludes" — it is the opposite. Used
 against a project directory whose excludes were `.ssh/`, `.webhook-secret`,

@@ -5,7 +5,7 @@ nav:
       - index.md
       - tags.md
       - worklog
-      - Help - read before editing: content/features_demo/feature_demo.md
+      - Help - read before editing: help.md
   - content/linux-admin
   - content/linux-develop
   - content/linux-infra

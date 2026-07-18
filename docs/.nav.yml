@@ -1,6 +1,7 @@
 nav:
   - index.md
   - tags.md
+  - worklog
   - content/linux-admin
   - content/linux-develop
   - content/linux-infra

@@ -1,8 +1,8 @@
 
-# [Hailo AI Processors](hailo.ai)
+# [Hailo AI Processors](https://hailo.ai)
 
 ## Hailo 8
-![[images/Hailo-8 AI Processor.png]]  
+![Hailo-8 AI Processor](../../images/Hailo-8 AI Processor.png)  
 [Source](https://us1.discourse-cdn.com/flex015/uploads/hailo/original/2X/0/0c06545f5fad58379c2c1f3ffc678432158f3488.png)
 
 1. Why is Hailo a complete SOC, but it still needs to be connected to another processor through methods such as PCIE? And it seems that all the programs are running on external processors (for example, external processors need to download software like Hailo RT). If this is the case, then what are the functions of the Cortex M4 core on the Hailo 8 and other peripherals such as I2C, USB, and ETH?

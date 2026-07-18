@@ -74,14 +74,21 @@ plugins:
       separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   - minify:
       minify_html: true
+  # The tags index lives at docs/tags.md, marked with <!-- material/tags -->.
   - tags
   - exclude:
       glob:
-        - "content/concepts/ai_ml_basics/decision_making.md"
+        # Fragments inlined into ai_ml_basics/index.md via markdown-include.
+        # Excluded so they do not also render as standalone duplicate pages.
         - content/concepts/ai_ml_basics/approaches.md
         - content/concepts/ai_ml_basics/cognitive_functions.md
-        - content/concepts/ai_ml_basics/tasks.md  
+        - content/concepts/ai_ml_basics/tasks.md
         - content/concepts/ai_ml_basics/ann.md
+        # Third-party text, kept for reference but not republished here.
+        - content/concepts/course_activeloop/*
+        - content/python/pycallgraph.md
+        # Script stash that lives under docs/ but is not documentation.
+        - content/WorkingScripts/*
   - mkdocs-jupyter:
       execute: True
       include_source: True
@@ -139,37 +146,52 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 # Page tree
+# Page tree
 nav:
   - about:
     - index.md
+    - tags.md
   - linux-admin:
+    - content/linux-admin/apt.md
     - content/linux-admin/crontab.md
+    - content/linux-admin/fdisk.md
+    - content/linux-admin/homebrew.md
     - content/linux-admin/manage_users.md
-    - content/linux-admin/ports.md
-    - content/linux-admin/runscript_without_password.md
-    - content/linux-admin/sd_card_backup_with_dd.md
     - content/linux-admin/mermaid.md
     - content/linux-admin/mime.md
     - content/linux-admin/notify-send.md
     - content/linux-admin/packages.md
+    - content/linux-admin/ports.md
+    - content/linux-admin/rc_local.md
+    - content/linux-admin/runscript_without_password.md
+    - content/linux-admin/sd_card_backup_with_dd.md
+    - content/linux-admin/systemctl.md
     - content/linux-admin/vscode.md
-    - content/linux-admin/fdisk.md
-    - content/linux-develop/vim.md
+    - Setup a new machine:
+      - content/linux-admin/setup a new machine/Setup Data Server.md
   - linux-develop:
     - content/linux-develop/git.md
+    - content/linux-develop/hugo.md
     - content/linux-develop/markdown.md
     - content/linux-develop/postman.md
+    - content/linux-develop/terminal_pagers.md
     - content/linux-develop/tmux.md
-    - content/linux-develop/hugo.md
+    - content/linux-develop/TUI.md
+    - content/linux-develop/vim.md
+    - content/linux-develop/markdown_medium_try/Markdown Browser - A Flutter Package.md
   - linux-infra:
     - nginx: content/linux-infra/Nginx.md
     - postgresql: content/linux-infra/postgresql.md
-    - mddm: content/linux-infra/mdadm.md
+    - mdadm: content/linux-infra/mdadm.md
     - my_sql: content/linux-infra/mysql.md
     - redis: content/linux-infra/redis.md
     - image_magick: content/linux-infra/image_magick.md
     - image_utils: content/linux-infra/image_utilities.md
-    
+    - certbot: content/linux-infra/certbot.md
+    - exif_tools: content/linux-infra/exif_tools.md
+    - docker: content/linux-infra/docker/index.md
+    - installer for debian: content/linux-infra/Installer for debian.md
+    - glossary: content/linux-infra/glossary.md
   - embedded:
     - m5_stack:
       - content/embedded/m5_stack/index.md
@@ -180,41 +202,82 @@ nav:
       - content/embedded/Raspberry Pi/Setup_RPi.md
       - content/embedded/Raspberry Pi/Lychee_on_RPi.md
       - content/embedded/Raspberry Pi/Lychee_as_photo_manager.md
+      - content/embedded/Raspberry Pi/AI on Raspberry Pi.md
+    - Hailo Extension for RPi 5:
+      - content/embedded/Hailo Extension for RPi 5/index.md
+      - content/embedded/Hailo Extension for RPi 5/0 Install on RPi.md
+      - content/embedded/Hailo Extension for RPi 5/Data Flow Compiler.md
+      - content/embedded/Hailo Extension for RPi 5/After reboot.md
   - python:
     - content/python/schedule.md
     - content/python/pillow.md
     - content/python/using pip.md
-    - content/python/scripts/validate_password.md
-    - content/python/scripts/single_instance_lock.md
+    - content/python/cv2.md
+    - content/python/heic_image.md
+    - content/python/cProfile.md
+    - content/python/CST Transformer.md
+    - content/python/Face Recognition.md
+    - scripts:
+      - content/python/scripts/validate_password.md
+      - content/python/scripts/single_instance_lock.md
     - Image Repo as a Flask Microservice:
+      - content/python/Image Repo as a Flask Microservice/index.md
       - content/python/Image Repo as a Flask Microservice/Installation.md
       - content/python/Image Repo as a Flask Microservice/first_flask_app.md
       - content/python/Image Repo as a Flask Microservice/image_upload_endpoint.md
-      - content/python/Image Repo as a Flask Microservice/index.md
-
+    - Jupyter Notebook:
+      - content/python/jupyter-notebook/index.md
+      - content/python/jupyter-notebook/demo.ipynb
+      - content/python/notebooks/test.ipynb
+      - content/python/notebooks/validate_passwords.ipynb
+  - client-app:
+    - content/client-app/Content In.md
+    - content/client-app/dart_articles.md
+    - content/client-app/iproxy_developer_not_verified.md
+    - content/client-app/reinstall_pod.md
+    - content/client-app/xcode_backend_sh_missing.md
+    - content/client-app/medium tries/Dart Platform Channels on Linux.md
   - concepts:
     - content/concepts/image_dithering.md
-    - content/FAQ/REST.md 
-    - content/concepts/MkDocs.md   
+    - content/concepts/MkDocs.md
+    - content/concepts/display_resolutions.md
+    - content/concepts/Box-Drawing Unicode Characters.md
+    - content/concepts/feynman_lectures.md
     - Building Artificial Intelligence using Machine Learning:
       - content/concepts/ai_ml_basics/index.md
-    
-  - faq: content/FAQ/index.md 
-  - glossary: content/linux-infra/glossary.md
-  - help:
-    - content/features_demo/feature_demo.md
+      - content/concepts/ai_ml_basics/bayesian_statistics.md
+      - content/concepts/ai_ml_basics/autoencoder.md
+      - medium article:
+        - content/concepts/ai_ml_basics/medium article/Part 1.md
+        - content/concepts/ai_ml_basics/medium article/Part 2.md
+        - content/concepts/ai_ml_basics/medium article/Part 3.md
+    - OCR:
+      - content/concepts/ocr/ocr_products.md
+      - content/concepts/ocr/tesseract_installation.md
+      - content/concepts/ocr/tesseract_links.md
+  - mac-admin:
+    - content/mac-admin/brew.md
+    - content/mac-admin/ditto.md
+    - content/mac-admin/export_photos.md
+    - content/mac-admin/mac_security.md
+  - faq:
+    - content/FAQ/index.md
+    - content/FAQ/REST.md
+  - non tech:
+    - content/non tech/Differences Between Simple, Compound, and Complex Sentences.md
+    - content/non tech/Scrambling 'TOP'.md
+    - content/non tech/wewuzzing.md
+    - content/non tech/marathi_phonetic_typing.md
+    - DEAL Marathi:
+      - content/non tech/DEAL Marathi/DEAL Marathi.md
   - general:
-    - content/concepts/display_resolutions.md
     - content/general/online_tools.md
     - content/general/quotes.md
     - content/general/repositories.md
     - content/general/software.md
-    - content/linux-develop/terminal_pagers.md
-    - content/linux-infra/certbot.md
-    - content/linux-infra/exif_tools.md
-    - content/mac-admin/ditto.md
-    - content/mac-admin/export_photos.md
-    - content/mac-admin/mac_security.md
-    - content/python/cv2.md
-    - content/python/heic_image.md
-    - content/python/notebooks/test.ipynb
+    - content/general/svg_icons.md
+    - content/general/Japanese filenames.md
+    - content/general/search_for_media_with_find.md
+    - content/general/sync_conflict_case_sensitive.md
+  - help:
+    - content/features_demo/feature_demo.md

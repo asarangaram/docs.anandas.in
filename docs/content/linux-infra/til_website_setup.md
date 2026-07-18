@@ -514,6 +514,49 @@ Dump the Forgejo instance itself for users and settings:
 sudo -u git forgejo dump -c /etc/forgejo/app.ini -f <COLD_STORAGE_PATH>/forgejo-$(date +%F).zip
 ```
 
+## Gotchas
+
+Things that cost time on the first build of this setup.
+
+**The service hangs on `systemctl start`.** The upstream unit is `Type=notify`.
+If `INSTALL_LOCK` is not set, Forgejo parks on the web installer and never
+signals readiness, so systemd waits for the full 90 s timeout and then kills
+it. Pre-seed `app.ini` with `INSTALL_LOCK = true` instead of using the wizard.
+
+**Fatal `permission denied` writing `app.ini`.** Forgejo generates
+`JWT_SECRET` and `LFS_JWT_SECRET` on first start and persists them into the
+config. With `app.ini` as `root:git 640` that write fails and the service
+crash-loops. Either supply all four secrets up front -- `SECRET_KEY`,
+`INTERNAL_TOKEN`, `JWT_SECRET`, `LFS_JWT_SECRET`, each from
+`forgejo generate secret <NAME>` -- or make the file writable by `git`.
+Supplying them keeps the config read-only and reproducible.
+
+**Webhooks to localhost are refused.** Forgejo blocks webhook targets on
+loopback and private ranges as SSRF protection, failing with
+`deny '127.0.0.1'`. Allow just the narrowest range needed:
+
+```ini
+[webhook]
+ALLOWED_HOST_LIST = loopback
+```
+
+**Prefer the system sshd over the built-in SSH server.** With
+`START_SSH_SERVER = true`, a correctly registered `ed25519` key was rejected
+with no log line at any level. Setting `START_SSH_SERVER = false` and
+`SSH_PORT = 22` uses OpenSSH with the `git` account and
+`/home/git/.ssh/authorized_keys`, which works. Check for an `AllowUsers` line
+in `sshd_config` -- if present, `git` must be added to it.
+
+**A `post-receive` hook is the wrong tool here.** Under the standard install
+the repositories are owned by `git` with mode `750`, so installing a custom
+hook needs root, and the hook then runs as `git` -- which cannot write build
+output into another user's home. Use a webhook and a receiver running as the
+user that owns the web root, as in step 7.
+
+**Use a read-only deploy key for the build.** The machine running the build
+needs its own key. A per-repo deploy key without write access is enough, and
+is preferable to reusing a personal account key.
+
 ## Security setup
 
 | Control | Setting |

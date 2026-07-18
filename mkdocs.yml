@@ -143,6 +143,9 @@ markdown_extensions:
   
 extra_javascript:
   - javascripts/mathjax.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  # polyfill.io was deliberately removed. The service was sold in 2024 and used
+  # to serve malware to sites that embedded it; the domain is now hostile.
+  # It came from an old Material for MkDocs MathJax example. MathJax 3 needs no
+  # polyfill on any browser this site supports.
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 

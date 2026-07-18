@@ -11,7 +11,9 @@ theme:
   features:
     - announce.dismiss
     - content.action.edit
-    - content.action.view
+    # content.action.view is deliberately off. Material derives the view URL
+    # from edit_uri by rewriting _edit -> _raw, which 404s on Forgejo (its
+    # source path is src/branch/<branch>/). The edit button covers the need.
     - content.code.annotate
     - content.code.copy
     # - content.code.select

@@ -497,6 +497,24 @@ The secret is read once at install time and written into the systemd unit
 (mode 600), because a service starting at boot cannot prompt to unlock a GPG
 key. `pass` is therefore the durable record, not the runtime source.
 
+!!! warning "`pass` needs an interactive session"
+    Decryption requires the GPG key to be unlocked, so `pass show` fails over
+    a scripted SSH session with `gpg: decryption failed: No such file or
+    directory` — there is no TTY for pinentry. Run `just hook-install`, and
+    anything else that reads `pass`, from an interactive shell.
+
+    Nothing automated depends on it. The receiver reads its secret from the
+    systemd unit, the build uses a passphrase-less deploy key file, and the
+    mirror token lives inside Forgejo. No unattended path needs the GPG key.
+
+**What `pass` is actually for here.** The secret still reaches the systemd
+unit in plaintext, so on-box protection is the same as a mode-600 file. What
+it adds is a record that is encrypted at rest and survives the machine —
+which is the failure this setup already hit once, when a stray
+`rsync --delete-excluded` destroyed the only copy of the webhook secret and
+the deploy key. Treat `pass` as the backup of record, not as runtime
+hardening.
+
 **The SSH deploy key stays a file.** A mode-600 private key is already the
 conventional secure form; putting it in `pass` would mean writing it back to
 disk at build time, which is worse. Keep a copy in `pass` only if you would

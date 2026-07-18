@@ -11,39 +11,34 @@ git clone git@github.com:asarangaram/docs.anandas.in.git
 ### Install required Linux packages
 
 ```
-sudo  apt install python3.10 python3.10-venv mkdocs
+sudo apt install python3 python3-venv
 ```
 
-### Create a Virtual environment and activiate
+### Create a Virtual environment and activate
 
 ```
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-```
-
-### Install `pip-tools`
-
-```
-pip install pip-tools
 ```
 
 ### Install python dependencies
 
 ```
-pip-compile --config=pyproject.toml requirements.in >& requirements.txt 
-pip install -r requirements.txt
+pip install -r requirements.in
 ```
 
-Note
-    : If we use readthedocs' CI/CD, update requirement.txt into git, if there 
-    is any change. 
-    FIXME: Can we change the configurations in readthedocs.yaml to use
-    requirement.in instead of requirement.txt?
+Read the Docs installs the same `requirements.in`, so there is no compiled
+lockfile to keep in sync (this resolves the old `pip-compile` step and its
+FIXME). The pins are open; if an upstream release ever breaks a build, pin
+that one package in `requirements.in`.
 
 ### Run locally
 
 ```
 mkdocs serve
-mkdocs build
-
+mkdocs build --strict
 ```
+
+Use `--strict` before pushing. It turns "page not in nav", missing-file and
+broken-link warnings into errors, which is what keeps the published nav and
+the files on disk from drifting apart.

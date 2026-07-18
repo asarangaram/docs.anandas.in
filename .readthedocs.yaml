@@ -14,7 +14,10 @@ build:
 mkdocs:
   configuration: mkdocs.yml
 
-# Optionally declare the Python requirements required to build your docs
+# Python requirements required to build the docs.
+# requirements.in is installed directly, so there is no compiled lockfile to
+# keep in sync. If an upstream release ever breaks a build, pin that one
+# package in requirements.in.
 python:
   install:
-    - requirements: requirements.txt
+    - requirements: requirements.in

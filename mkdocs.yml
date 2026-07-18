@@ -217,6 +217,7 @@ nav:
     - content/python/cProfile.md
     - content/python/CST Transformer.md
     - content/python/Face Recognition.md
+    - content/python/pyfacy.md
     - scripts:
       - content/python/scripts/validate_password.md
       - content/python/scripts/single_instance_lock.md

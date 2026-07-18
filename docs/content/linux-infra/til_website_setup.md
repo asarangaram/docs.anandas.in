@@ -553,6 +553,11 @@ hook needs root, and the hook then runs as `git` -- which cannot write build
 output into another user's home. Use a webhook and a receiver running as the
 user that owns the web root, as in step 7.
 
+**Do not replace a bind-mounted directory.** Docker pins a bind mount to the
+inode it saw at container start. Promoting a build with `rm -rf` + `mv` orphans
+the mount and the container serves the old, unlinked copy while the build
+reports success. Use `rsync -a --delete` into the existing directory instead.
+
 **Use a read-only deploy key for the build.** The machine running the build
 needs its own key. A per-repo deploy key without write access is enough, and
 is preferable to reusing a personal account key.

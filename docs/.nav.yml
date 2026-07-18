@@ -1,7 +1,11 @@
 nav:
-  - index.md
-  - tags.md
-  - worklog
+  # index.md is the section's landing page (theme feature navigation.indexes),
+  # so the tab links to the home page and these group beneath it.
+  - Today I learned on tech:
+      - index.md
+      - tags.md
+      - worklog
+      - Help - read before editing: content/features_demo/feature_demo.md
   - content/linux-admin
   - content/linux-develop
   - content/linux-infra
@@ -13,4 +17,3 @@ nav:
   - content/FAQ
   - content/non tech
   - content/general
-  - content/features_demo

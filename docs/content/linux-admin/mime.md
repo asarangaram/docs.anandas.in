@@ -1,3 +1,8 @@
+---
+title: MIME types
+---
+
+# MIME types
 
 TODO: 
 - [ ]  MIME ( Multipurpose Internet Mail Extensions) Types

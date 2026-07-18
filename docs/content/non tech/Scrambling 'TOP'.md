@@ -1,3 +1,14 @@
+---
+title: Scrambling 'TOP'
+tags:
+  - todo
+---
+
+# Scrambling 'TOP'
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
+
 TOP is the english word.
 
 OTP - One Time Password

@@ -1,4 +1,8 @@
+---
+title: Image dithering
+---
 
+# Image dithering
 
 Image dithering is a technique used to reduce the number of colors in an image while maintaining the appearance of continuous-tone color gradations. When an image has more colors than can be displayed or printed, dithering helps approximate those colors by using a smaller palette. 
 

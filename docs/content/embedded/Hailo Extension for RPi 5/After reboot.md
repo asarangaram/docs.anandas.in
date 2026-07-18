@@ -1,4 +1,15 @@
-If you start from `SDCardBackup_Hailo_Digirum.img`, else complete steps in [[0 Install on RPi]]
+---
+title: After reboot
+tags:
+  - todo
+---
+
+# After reboot
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
+
+If you start from `SDCardBackup_Hailo_Digirum.img`, else complete steps in [Install on RPi](0 Install on RPi.md)
 
 Login to the session with 
 ```

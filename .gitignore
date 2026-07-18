@@ -1,4 +1,5 @@
 **/.venv/**
 site/**
-docs/content/.obsidian/**
+docs/.obsidian/**
+docs/content/logseq/**
 .DS_Store

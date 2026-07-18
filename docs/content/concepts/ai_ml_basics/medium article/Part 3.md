@@ -1,3 +1,9 @@
+---
+title: Building AI using ML - Part 3
+---
+
+# Building AI using ML - Part 3
+
 ### Artificial Intelligence — A Clear and Simple Introduction: Part 3
 
 _This is the third part of five part introduction series on “Artificial Intelligence”, an attempt to explain the fundamentals in simple language without much technical jargon._

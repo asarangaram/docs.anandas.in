@@ -1,0 +1,7 @@
+title: linux-infra
+nav:
+  - "Nginx.md"
+  - "certbot.md"
+  - "til_website_setup.md"
+  - "*"
+  - "glossary.md"

@@ -1,3 +1,8 @@
+---
+title: Japanese filenames
+---
+
+# Japanese filenames
 
 Japanese (and other non-ASCII) characters in filenames are indeed treated differently on **Apple’s native file systems** (like **APFS** and older **HFS+**) compared to **exFAT**.
 

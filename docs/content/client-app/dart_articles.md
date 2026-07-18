@@ -1,5 +1,13 @@
-## The Power of the late keyword in Dart
+---
+tags:
+  - todo
+---
 
-https://thiele.dev/blog/the-power-of-late-keyword-in-dart/
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
 
-research automation engine. Powered by GPT-4.
+# Dart articles
+
+A reading list of Dart articles worth returning to.
+
+- [The Power of the `late` keyword in Dart](https://thiele.dev/blog/the-power-of-late-keyword-in-dart/)

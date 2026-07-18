@@ -1,3 +1,13 @@
+---
+title: Installer for Debian
+tags:
+  - todo
+---
+
+# Installer for Debian
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
 
 Assume you have created a Flask Application for your micro service. to deploy it on a linux machine, there are many ways. Most of the people provide containers. However, for most of the cases I came across the container is a overkill and most of the time providing a installer is sufficient. This installer will setup the files, create a WSGI service on the machine, then setup a nginx site by which the clients can access. Once this installer is run, the service should be up and running. This script can also handle ??
 Some of the important aspect of this script:

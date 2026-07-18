@@ -1,3 +1,8 @@
+---
+title: cProfile
+---
+
+# cProfile
 
 **Python includes a profiler called [`cProfile`](https://docs.python.org/3/library/profile.html#module-cProfile).** It not only gives the total running time, but also times each function separately, and tells you how many times each function was called, making it easy to determine where you should make optimizations.
 

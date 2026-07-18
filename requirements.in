@@ -5,4 +5,4 @@ mkdocs-exclude
 mkdocs-material
 mkdocs-minify-plugin
 mkdocs-jupyter
-nose2
+mkdocs-awesome-nav

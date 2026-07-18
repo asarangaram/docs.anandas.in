@@ -1,3 +1,9 @@
+---
+title: Mac security
+---
+
+# Mac security
+
 ## How to Allow Apps from Anywhere in Gatekeeper for macOS Ventura?
 
 

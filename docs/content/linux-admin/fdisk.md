@@ -1,3 +1,9 @@
+---
+title: fdisk
+---
+
+# fdisk
+
 ## `fdisk`
 
 `fdisk` stands for "fixed disk" or "format disk."

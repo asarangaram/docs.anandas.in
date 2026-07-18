@@ -1,3 +1,9 @@
+---
+title: Homebrew packages
+---
+
+# Homebrew packages
+
 ## Current
 ```
 brew install ffmpeg opencv rsync tree unar jdupes libmagic   libmagic media-info

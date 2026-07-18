@@ -2,18 +2,24 @@
 title: Validate password
 ---
 
-Create a RegExp that represents valid password, like below.
+# Validate password
+
+A valid password must contain at least one lowercase letter, one uppercase
+letter, one digit and one special character, and be 7-20 characters long.
+Each rule is expressed as a separate lookahead:
+
 ```python
-reg =   "^(?=.*\[a-z\])(?=.*\[A-Z\])(?=.*\\d)(?=.*\[@$!%*#?&\])\[A-Za-z\\d@$!#%*?&\]{6,20}$"
+reg = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{7,20}$"
 ```
 
-Snippet to validate
+Snippet to validate:
+
 ```python
-def validate_pw(password)
-    pat =   re.compile(reg)
-    mat =   re.search(pat, passwd)
-    if mat:
-        return True
-    else:
-        return False
+import re
+
+
+def validate_pw(password):
+    return re.search(re.compile(reg), password) is not None
 ```
+
+See the [runnable version with tests](../notebooks/validate_passwords.ipynb).

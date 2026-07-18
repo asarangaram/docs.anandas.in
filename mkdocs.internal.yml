@@ -1,0 +1,12 @@
+# Internal build: adds the repository link and the "edit this page" button.
+# Served on the LAN/VPN only. The public build (mkdocs.yml) has no repo_url,
+# so Material renders no edit button and no header repo link at all.
+#
+# The Forgejo URL comes from the environment, so the internal hostname is
+# never committed. The build sets it:
+#     FORGEJO_REPO_URL=https://<host>/<user>/til \
+#         mkdocs build --strict -f mkdocs.internal.yml
+INHERIT: ./mkdocs.yml
+
+repo_url: !ENV [FORGEJO_REPO_URL, "http://localhost:3000/anandas/til"]
+edit_uri: "_edit/main/docs/"

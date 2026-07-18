@@ -437,9 +437,80 @@ change.
 
 ## 13. Mirror to GitHub / Codeberg
 
-**Repository → Settings → Mirror Settings → Push Mirror**, with a token that
-has write scope, and **Sync when new commits are pushed** enabled. The remote
-is read-only from then on; its history is overwritten on each push.
+An off-site copy that costs nothing to maintain. Forgejo pushes to it
+automatically; the remote is never edited by hand.
+
+**On GitHub** — Settings → Developer settings → Personal access tokens →
+Fine-grained tokens → Generate new:
+
+* Repository access: **Only select repositories** → the mirror repository
+* Permissions: **Contents → Read and write** (nothing else is needed)
+* Store it: `pass insert til/github-token`
+
+**In Forgejo** — Repository → Settings → **Mirror Settings** → Add Push Mirror:
+
+| Field | Value |
+| --- | --- |
+| Remote Repository URL | `https://github.com/<USER>/<REPO>.git` |
+| Authorization | username, and the token as the password |
+| Sync when new commits are pushed | checked |
+
+Then **Synchronize Now**.
+
+Verify it properly rather than trusting the UI: push a commit to Forgejo
+only, wait, and confirm the remote moved on its own.
+
+```bash
+git push origin main                 # Forgejo only
+sleep 30
+git fetch github && git rev-parse --short main github/main   # must match
+```
+
+!!! warning "The mirror is strictly read-only"
+    Each sync force-updates the remote, so a commit made **on GitHub** is
+    silently destroyed on the next push. On any clone, block it:
+
+    ```bash
+    git remote set-url --push github no_push://mirror-is-read-only
+    ```
+
+## 13a. Secrets
+
+Four secrets exist in this setup. None belong in a repository.
+
+| Secret | Where it lives | If lost |
+| --- | --- | --- |
+| Forgejo `SECRET_KEY`, `INTERNAL_TOKEN`, `JWT_SECRET`, `LFS_JWT_SECRET` | `/etc/forgejo/app.ini`, `root:git 640` | in the `forgejo dump` archive |
+| Webhook HMAC secret | `pass til/webhook-secret` | regenerate, update the hook in Forgejo |
+| Build deploy key | `.ssh/deploy_key`, mode 600 | regenerate, replace the deploy key in Forgejo |
+| GitHub mirror token | `pass til/github-token` | issue a new token, update Mirror Settings |
+
+`pass` is the source of record for the shared secrets. `hook-install.sh`
+reads `til/webhook-secret` from it, generating one on first run:
+
+```bash
+pass insert til/webhook-secret     # or let hook-install.sh create it
+pass show til/webhook-secret       # to paste into Forgejo's webhook
+```
+
+The secret is read once at install time and written into the systemd unit
+(mode 600), because a service starting at boot cannot prompt to unlock a GPG
+key. `pass` is therefore the durable record, not the runtime source.
+
+**The SSH deploy key stays a file.** A mode-600 private key is already the
+conventional secure form; putting it in `pass` would mean writing it back to
+disk at build time, which is worse. Keep a copy in `pass` only if you would
+rather restore it than re-register a new one.
+
+**Rotate, don't recover.** Any of these can be regenerated in under a minute,
+and the correct response to a lost or exposed secret is a new one plus
+revocation of the old — never an attempt to retrieve the original.
+
+Gitignore them, and verify before the first commit of any hosting project:
+
+```bash
+git ls-files | grep -E '\.ssh/|secret|token' && echo "STOP: secret staged"
+```
 
 ## 14. Cold backups
 
@@ -507,6 +578,19 @@ build reports success. Use `rsync -a --delete` into the existing directory.
 **Use a read-only deploy key for the build.** The machine running the build
 needs its own key. A per-repo deploy key without write access is enough, and
 is preferable to reusing a personal account key.
+
+**`rsync --delete-excluded` deletes excluded files from the destination.**
+It is not "`--delete`, but safer about excludes" — it is the opposite. Used
+against a project directory whose excludes were `.ssh/`, `.webhook-secret`,
+`src/` and `static_hosting/`, it destroyed the deploy key, the webhook
+secret and the served output in one command. Use plain `--delete` to prune
+files absent from the source, and `--dry-run` first whenever the destination
+holds anything not reproducible.
+
+**Check that a file exists, not just that git ignores it.** A verification
+step that reports "ok: not tracked" is equally happy about a correctly
+ignored file and a file that has been deleted. When the check protects
+something irreplaceable, assert existence and permissions too.
 
 **Never load third-party scripts you do not control.** This site loaded
 `polyfill.io` on every page for years, inherited from an old MathJax example.

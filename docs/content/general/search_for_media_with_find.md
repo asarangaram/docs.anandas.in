@@ -1,3 +1,14 @@
+---
+title: Search for media with find
+tags:
+  - todo
+---
+
+# Search for media with find
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
+
 search Image and Video
 ```
 find . -type f | grep -v -E -i '\.(jpeg|jpg|png|mp4|mov|heic|tif|tiff|gif|bmp|svg|avi|dng|3gp|mpg|webp|m4v|iMovieMobile|psd|vob)$'

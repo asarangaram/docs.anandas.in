@@ -1,5 +1,13 @@
-AI on Rpi
+---
+title: AI on Raspberry Pi
+tags:
+  - todo
+---
 
+# AI on Raspberry Pi
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
 
 An attempt to setup a working environment with the following hardware
 

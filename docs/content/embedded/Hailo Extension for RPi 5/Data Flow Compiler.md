@@ -1,3 +1,13 @@
+---
+title: Data Flow Compiler
+tags:
+  - todo
+---
+
+# Data Flow Compiler
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
 
 In this article, let us go deep into how to get AI models (pre-trained),  convert it into .hef (Hailo Executable File.) and use it with Hailo-8 HAT for RPi. I have avoided optimised implementations for making this article simple. 
 

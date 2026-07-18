@@ -1,3 +1,14 @@
+---
+title: Autoencoder
+tags:
+  - todo
+---
+
+# Autoencoder
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
+
 Designed for unsupervised learning, dimensionality reduction, and, in some cases, generative modelling.
 
 Why it is called 'autoencoder'?

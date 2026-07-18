@@ -1,3 +1,10 @@
+---
+tags:
+  - todo
+---
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
 
 # TUI Development
 

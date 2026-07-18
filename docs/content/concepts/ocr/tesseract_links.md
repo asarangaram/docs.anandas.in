@@ -1,3 +1,13 @@
+---
+title: Tesseract links
+tags:
+  - todo
+---
+
+# Tesseract links
+
+!!! warning "Work in progress"
+    These are rough notes, not a finished write-up.
 
 * [Comparison of optical character recognition software](https://en.wikipedia.org/wiki/Comparison_of_optical_character_recognition_software)
 

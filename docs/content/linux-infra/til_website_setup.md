@@ -520,6 +520,14 @@ conventional secure form; putting it in `pass` would mean writing it back to
 disk at build time, which is worse. Keep a copy in `pass` only if you would
 rather restore it than re-register a new one.
 
+**Do not back up the Forgejo instance dump routinely.** It carries the four
+`app.ini` secrets and the mirror's access token in cleartext, duplicating
+values that `pass` already holds — and those values never change, so the copy
+buys nothing. What is unique to the dump (one user, two repos, a deploy key,
+a webhook) is faster to recreate from this page than to restore. Back up
+`~/.password-store` instead: it is GPG-encrypted at rest, so it is safe to
+hold on an unencrypted drive. If you do keep a dump, encrypt it first.
+
 **Rotate, don't recover.** Any of these can be regenerated in under a minute,
 and the correct response to a lost or exposed secret is a new one plus
 revocation of the old — never an attempt to retrieve the original.
@@ -614,15 +622,62 @@ uv venv .venv && uv pip install --python .venv/bin/python -r requirements.in
 .venv/bin/mkdocs build --strict
 ```
 
-Dump the instance itself for users and settings:
+## 14a. The instance dump
+
+The bundles hold the repositories and nothing else. Everything needed to
+rebuild the instance *around* them — accounts, SSH and deploy keys, the
+webhook and its secret, the push mirror and its token, and `app.ini` — lives
+in Forgejo's database. Dump it separately.
+
+Skip the repositories: they are already in the bundles, and including them
+would multiply the size for no gain.
 
 ```bash
-sudo -u git forgejo dump -c /etc/forgejo/app.ini -f <COLD_STORAGE>/forgejo-$(date +%F).zip
+sudo install -d -o git -g git -m 750 /var/lib/forgejo/tmp
+
+sudo -u git forgejo dump -c /etc/forgejo/app.ini -w /var/lib/forgejo \
+  -t /var/lib/forgejo/tmp \
+  --skip-repository --skip-log --skip-index \
+  -f /var/lib/forgejo/tmp/forgejo-$(date +%F).zip
 ```
 
-This part is not yet automated: it needs root on the intranet server, so it
-cannot be pulled remotely. The repositories are the irreplaceable half; the
-instance dump only saves recreating accounts, deploy keys and the webhook.
+The temp directory must exist and be writable by `git`, or the dump runs to
+completion and then fails at the final step.
+
+Move the result somewhere the backup machine can read, then automate it with
+a **system** timer — a user unit would need lingering, and this needs root
+regardless:
+
+```ini
+[Timer]
+OnCalendar=weekly
+Persistent=true
+```
+
+The backup machine pulls the dumps alongside the bundles, so the server still
+needs no route to it.
+
+Verify a dump rather than assuming it:
+
+```bash
+unzip -l <dump>.zip                          # app.ini, forgejo-db.sql, data/
+unzip -l <dump>.zip | grep -c repositories/  # expect 0
+unzip -p <dump>.zip forgejo-db.sql | grep -c "INSERT INTO \`user\`"
+```
+
+!!! warning "The GPG keys become the single point of failure"
+    The pass store and any encrypted dump are recoverable only with the GPG
+    keys they were encrypted to. Encrypt to **two** keys, ideally with one
+    that never expires, and keep an offline export of the private keys away
+    from the machines and the backup drive. An expired key still decrypts, but
+    a lost one does not — see
+    [Renewing an expiring GPG key](../linux-admin/gpg_key_renewal.md).
+
+!!! danger "The dump is a credential"
+    It contains `SECRET_KEY`, `INTERNAL_TOKEN`, `JWT_SECRET` and the mirror's
+    access token in cleartext. Keep it mode 600, never commit it, and
+    remember that a filesystem which does not honour Unix permissions — an
+    NTFS or exFAT drive read on another OS — offers no protection at all.
 
 ## Gotchas
 

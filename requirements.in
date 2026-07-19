@@ -1,4 +1,9 @@
-mkdocs
+# MkDocs 2.0 is a ground-up rewrite with no plugin system, no theme overrides
+# and no migration path -- it would break every plugin below plus overrides/.
+# mkdocs-material already caps mkdocs<2, but state it here so the constraint
+# does not silently disappear if that cap is ever relaxed upstream.
+# https://squidfunk.github.io/mkdocs-material/blog/2026/02/18/mkdocs-2.0/
+mkdocs<2
 mkdocstrings[python]
 markdown-include
 mkdocs-exclude

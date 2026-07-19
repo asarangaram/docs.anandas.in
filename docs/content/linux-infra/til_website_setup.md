@@ -27,7 +27,7 @@ the build stay inside the LAN. The public VPS serves static files only.
 graph TB
     subgraph daily["3 - Daily machines"]
         laptop["Mac / Linux laptop"]
-        browser["Browser<br/>Forgejo editor / Sveltia CMS"]
+        browser["Browser<br/>Forgejo web editor"]
     end
 
     subgraph lan["2 - Intranet server (LAN only)"]
@@ -310,40 +310,32 @@ server {
 
 ## 10. Publish the public site to the VPS
 
-The VPS needs nginx only. No git, no Python, no secrets.
+The VPS needs nginx only. No git, no Python, no secrets. In this setup it is a
+shared host already serving unrelated sites, so everything below is additive —
+check what is there before installing (`nginx -T`, `certbot certificates`).
 
 ```bash
-sudo apt install nginx
 sudo adduser --disabled-password --gecos "" deploy
-sudo mkdir -p /var/www/releases && sudo chown deploy:deploy /var/www/releases
+sudo install -d -o deploy -g deploy -m 700 /home/deploy/.ssh
+sudo install -d -o deploy -g deploy /var/www/til.anandas.in
 ```
 
-`/usr/local/bin/deploy-til` receives a tar on stdin and swaps atomically:
-
-```bash
-#!/bin/bash
-set -euo pipefail
-rel="/var/www/releases/$(date +%Y%m%d-%H%M%S)"
-mkdir -p "$rel"; tar -xz -C "$rel"
-[ -f "$rel/index.html" ] || { rm -rf "$rel"; echo "no index.html" >&2; exit 1; }
-ln -sfn "$rel" /var/www/til.tmp
-mv -T /var/www/til.tmp /var/www/til.anandas.in
-ls -dt /var/www/releases/* | tail -n +6 | xargs -r rm -rf
-```
-
-Restrict the deploy key on the VPS so it can do nothing else:
+Authorise the publishing key — generated on the intranet build machine, so the
+private half never leaves it:
 
 ```
-command="/usr/local/bin/deploy-til",no-pty,no-agent-forwarding,no-port-forwarding,no-X11-forwarding ssh-ed25519 AAAA... deploy@til
+ssh-ed25519 AAAA... til-publish@<BUILD_HOST>
 ```
 
-The intranet build then publishes with:
+Optionally restrict it to one directory with `rrsync`, which ships with rsync
+and needs no custom script:
 
-```bash
-tar -cz -C static_hosting/public . | ssh -i <KEY> -p <SSH_PORT> deploy@<VPS_HOST>
+```
+command="rrsync /var/www/til.anandas.in",no-pty,no-agent-forwarding,no-port-forwarding ssh-ed25519 AAAA... til-publish@<BUILD_HOST>
 ```
 
-nginx on the VPS, then certbot:
+nginx, then certbot. **Order matters**: certbot validates over HTTP from the
+public internet, so the DNS record must already point here or issuance fails.
 
 ```nginx
 server {
@@ -351,7 +343,7 @@ server {
     server_name til.anandas.in;
     root /var/www/til.anandas.in;
     index index.html;
-    location / { try_files $uri $uri/ =404; }
+    location / { try_files $uri $uri/ $uri.html =404; }
     error_page 404 /404.html;
     location ~* \.(css|js|png|jpg|jpeg|gif|svg|woff2?|ico)$ {
         expires 30d;
@@ -363,50 +355,89 @@ server {
 }
 ```
 
+On a multi-site host do **not** remove `sites-enabled/default` without checking
+what it is — it may be a real vhost rather than the stock placeholder.
+
 ```bash
+sudo nginx -t && sudo systemctl reload nginx
 sudo certbot --nginx -d til.anandas.in
 sudo certbot renew --dry-run
 ```
 
-## 11. Sveltia CMS
+### Publishing is manual, by choice
 
-Requires Forgejo 12.0 / Gitea 1.24 or later. In Forgejo:
-**Settings → Applications → Create OAuth2 Application**.
+The build machine pushes when told to, not on every commit. Edits reach the
+LAN copy immediately; the public site moves forward on one command, once a
+batch of work is worth showing.
 
-* Redirect URI: `http://<LAN_HOSTNAME_SITE>/admin/`
-* Uncheck **Confidential** — the CMS uses PKCE, so there is no client secret
-  and no auth broker to run
-
-`docs/admin/config.yml`:
-
-```yaml
-backend:
-  name: gitea
-  repo: <USER>/til
-  base_url: http://<LAN_ADDRESS>:3000
-  api_root: http://<LAN_ADDRESS>:3000/api/v1   # /api/v1 is required
-  app_id: <CLIENT_ID>
-  branch: main
-
-media_folder: docs/content/images
-public_folder: /content/images
-
-collections:
-  - name: pages
-    label: Pages
-    folder: docs/content
-    create: true
-    nested: { depth: 4 }
-    extension: md
-    format: frontmatter
-    fields:
-      - { name: title, label: Title, widget: string }
-      - { name: tags, label: Tags, widget: list, required: false }
-      - { name: body, label: Body, widget: markdown }
+```bash
+just release     # build, then publish
+just publish     # publish an existing build
 ```
 
-Serve `/admin` from the LAN only. The CMS calls the Forgejo API from the
-browser, so publishing `/admin` on the VPS would break for anyone off the VPN.
+`scripts/publish.sh` is a plain rsync. An earlier version used dated release
+directories and an atomic symlink swap — that is machinery for services where
+a moment of inconsistency costs something, and was removed as overkill for a
+static notes site.
+
+One guard was kept, and it is the important one:
+
+```bash
+pages="$(find "$pub" -name '*.html' | wc -l)"
+if [ ! -f "$pub/index.html" ] || [ "$pages" -lt 50 ]; then
+    echo "REFUSING: $pub looks wrong ($pages pages)." >&2
+    exit 1
+fi
+```
+
+`rsync --delete` faithfully mirrors an empty source, which would erase the live
+site. The check runs before anything leaves the machine.
+
+The script then verifies over HTTPS rather than trusting rsync's exit code —
+see the gotcha about builds that succeed while publishing nothing.
+
+### Certbot on a shared host: check the authenticator
+
+Certs issued with `authenticator = standalone` need port 80 completely free.
+On a host where nginx runs permanently that can never succeed — such a cert
+works at issuance and then fails every renewal, silently, until it is close
+enough to expiry to warn.
+
+```bash
+sudo grep -E 'authenticator' /etc/letsencrypt/renewal/*.conf
+```
+
+Anything reporting `standalone` on a host with a permanent web server is
+already broken. Convert it to renew through nginx:
+
+```bash
+sudo certbot certonly --nginx --cert-name <NAME> -d <DOMAIN> \
+     --deploy-hook "systemctl reload nginx"
+```
+
+`--deploy-hook` is required with `certonly`: without an installer nothing
+reloads nginx, so a renewed cert sits on disk while nginx serves the expired
+one from memory. Check the full domain list with `certbot certificates` first —
+certbot replaces the SAN set with whatever `-d` flags are passed, so omitting a
+name silently drops it.
+
+## 11. Editing: why there is no CMS
+
+Considered and rejected. Sveltia CMS is compatible on paper — Forgejo 12.0+
+exposes the Gitea backend, and the CMS uses PKCE, so no client secret and no
+auth broker are needed.
+
+It was dropped because Forgejo's own web UI already covers both jobs:
+
+* **Editing** — the *edit this page* button on the internal site opens the
+  file directly.
+* **Creating** — **Add File → New File** in Forgejo, typing the full path.
+  The nav picks the page up on its own (section 12), so no config edit is
+  needed.
+
+A CMS would add an OAuth application, a `/admin` route that must stay off the
+public site, and a config file duplicating the site structure — for a
+create-page form. Not worth the moving parts at this scale.
 
 ## 12. Navigation without editing mkdocs.yml
 

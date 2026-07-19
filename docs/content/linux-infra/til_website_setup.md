@@ -533,8 +533,28 @@ git ls-files | grep -E '\.ssh/|secret|token' && echo "STOP: secret staged"
 ## 14. Cold backups
 
 Forgejo lives on the intranet server, so its disk cannot be the only copy.
-Write bundles to a different machine or an external disk, only when the refs
-have changed:
+A second machine pulls both repositories — the content repo **and** the
+hosting project, which holds the build script and the webhook receiver —
+and writes dated bundles.
+
+Put the bare mirrors and the bundles on **two different physical disks**, so
+a single drive failure loses at most one of them. On the laptop here the
+mirrors sit on the NVMe and the bundles on a second internal SATA disk.
+
+Be clear about what this leg does and does not cover:
+
+| Failure | Covered by |
+| --- | --- |
+| Server disk dies, repo deleted, bad force-push | these bundles (point-in-time, and no `--prune`) |
+| Server compromised | these bundles — it holds no credentials for this machine |
+| One laptop disk dies | the other laptop disk |
+| Laptop lost, stolen or burnt | **the GitHub push mirror**, not this |
+
+Bundles on a second internal disk are not an off-site copy. The mirror in
+step 13 is the off-site leg; this one adds point-in-time history that a
+force-push cannot destroy.
+
+Bundle only when the refs have changed:
 
 ```bash
 before=$(git -C "$REPO" rev-parse --all | sha256sum)
@@ -551,11 +571,32 @@ OnCalendar=daily
 Persistent=true
 ```
 
+A user timer only runs while that user has a session. To have it fire on a
+machine nobody is logged into:
+
+```bash
+sudo loginctl enable-linger <USER>
+```
+
+**Test the restore, once.** A backup that has never been restored is a
+hypothesis. Clone from a bundle and build the site from it:
+
+```bash
+git clone <COLD_STORAGE>/til-<DATE>.bundle /tmp/restore-test
+cd /tmp/restore-test
+uv venv .venv && uv pip install --python .venv/bin/python -r requirements.in
+.venv/bin/mkdocs build --strict
+```
+
 Dump the instance itself for users and settings:
 
 ```bash
 sudo -u git forgejo dump -c /etc/forgejo/app.ini -f <COLD_STORAGE>/forgejo-$(date +%F).zip
 ```
+
+This part is not yet automated: it needs root on the intranet server, so it
+cannot be pulled remotely. The repositories are the irreplaceable half; the
+instance dump only saves recreating accounts, deploy keys and the webhook.
 
 ## Gotchas
 

@@ -554,6 +554,32 @@ Bundles on a second internal disk are not an off-site copy. The mirror in
 step 13 is the off-site leg; this one adds point-in-time history that a
 force-push cannot destroy.
 
+Keep it all in one place — script, mirrors and bundles together:
+
+```
+<BACKUP_ROOT>/
+├── backup-til.sh
+├── mirrors/            bare mirrors, incrementally fetched (working state)
+│   ├── til.git
+│   └── host_til.git
+└── bundles/            dated snapshots of full history (the actual backup)
+    ├── til-<date>.bundle
+    └── .til.last-bundled
+```
+
+Compare against **what was last bundled**, not against the current run's
+fetch. Detecting change from the fetch alone means any `git remote update`
+run outside the script silently advances the mirror, and the new commits then
+appear in no bundle at all:
+
+```bash
+marker="$BUNDLES/.$name.last-bundled"
+current="$(git -C "$repo" rev-parse --all | sha256sum | cut -d' ' -f1)"
+[ -f "$marker" ] && [ "$current" = "$(cat "$marker")" ] && continue
+# ... bundle, verify, then:
+printf '%s' "$current" > "$marker"
+```
+
 Bundle only when the refs have changed:
 
 ```bash
@@ -637,6 +663,22 @@ build reports success. Use `rsync -a --delete` into the existing directory.
 **Use a read-only deploy key for the build.** The machine running the build
 needs its own key. A per-repo deploy key without write access is enough, and
 is preferable to reusing a personal account key.
+
+**A systemd *user* service dies when the last session closes.** Without
+lingering, `systemctl --user` units stop when the user logs out — so the
+webhook receiver was alive only while an SSH session happened to be open.
+Forgejo's delivery then failed with `connection refused`, and **Forgejo does
+not retry**: the push stayed unpublished, with a green push and a silent
+site. Enable lingering on any machine running a `--user` unit unattended:
+
+```bash
+sudo loginctl enable-linger <USER>
+loginctl show-user <USER> -p Linger      # expect Linger=yes
+```
+
+Choosing `--user` units to avoid needing root is a real trade: it buys a
+service that stops when you log out. For anything in the publish path, either
+enable lingering or use a system unit running as that user.
 
 **`systemctl enable --now` does not restart a running service.** After
 rotating the webhook secret, the unit file, `pass` and the Forgejo webhook

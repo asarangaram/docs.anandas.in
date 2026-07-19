@@ -31,9 +31,12 @@ gpg --list-keys --keyid-format=long --with-subkey-fingerprint
 ```
 
 ```
-pub   ed25519/BBD42926E04CA0BD 2026-05-11 [SC] [expires: 2029-05-10]
-sub   cv25519/15EFB07348FE92D7 2026-05-11 [E]  [expires: 2029-05-10]
+pub   ed25519/AAAA1111BBBB2222 2024-01-01 [SC] [expires: 2027-01-01]
+sub   cv25519/CCCC3333DDDD4444 2024-01-01 [E]  [expires: 2027-01-01]
 ```
+
+Note the two separate `[expires:]` lines: the primary key `[SC]` and the
+encryption subkey `[E]` are extended independently.
 
 Machine-readable, for a monitoring script — field 7 is the expiry as a Unix
 timestamp, empty when the key never expires:

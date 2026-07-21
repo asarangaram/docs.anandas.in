@@ -59,57 +59,34 @@ chmod 600 ~/.ssh/authorized_keys
 
 ## 3. Wi-Fi on 5 GHz (the India / regulatory gotcha)
 
-On a fresh Pi the Wi-Fi radio is **rfkill-blocked until a country is set** — the
-symptom is Wi-Fi showing as **"unavailable"**. Set the country first:
+Two Pi quirks bite here: the radio is **rfkill-blocked until a country is set**
+(Wi-Fi shows as "unavailable"), and under `IN` the 5 GHz band only works on the low
+channels **36–48**. Set the country, then connect:
 
 ```bash
 sudo raspi-config nonint do_wifi_country IN
-sudo rfkill unblock wifi
-nmcli radio wifi on
-nmcli device status            # wlan0 should become 'disconnected', not 'unavailable'
-sudo nmcli device wifi connect 'YOUR_SSID' password 'YOUR_PASSWORD'
-hostname -I                    # confirm it got an IP
+sudo nmcli device wifi connect '<SSID>' password '<password>'
 ```
 
-!!! tip "5 GHz channels under the IN regulatory domain"
-    With country `IN`, the Pi only reliably uses the **low UNII-1 channels — 36 / 40 /
-    44 / 48**. DFS and higher channels are refused, so the Pi silently won't associate
-    on them. Set your **router's 5 GHz channel to 36–48** (avoid "Auto"). This is a
-    *router* setting — it can't be baked into the SD card.
+Full walkthrough + the router-channel fix →
+[How to fix Raspberry Pi Wi-Fi that won't connect](../../FAQ/raspberry-pi-wifi-wont-connect.md).
 
 ## 4. SSH key login
-
-From the laptop:
 
 ```bash
 ssh anandas@edge-infer-01.local       # or ssh anandas@<ip>
 ```
 
-If you re-flash and hit `REMOTE HOST IDENTIFICATION HAS CHANGED`, clear the stale
-entry: `ssh-keygen -R <ip>`. To install the key without hand-typing it, serve it over
-HTTP from the laptop (`python3 -m http.server 8000`) and pull it in on the Pi:
-`curl -fsSL http://<laptop-ip>:8000/id_ed25519.pub >> ~/.ssh/authorized_keys`.
+If the key isn't in place yet (or you can't paste it at a console) →
+[How to copy your SSH key to a headless machine](../../FAQ/copy-ssh-key-to-headless-machine.md).
+After a re-flash, clear a stale host key with `ssh-keygen -R <ip>`.
 
-## 5. Static IP (NetworkManager)
+## 5. Static IP
 
-Raspberry Pi OS (Bookworm / trixie) uses **NetworkManager**, so the old
-`/etc/dhcpcd.conf` static-IP trick is gone — and there is no static-IP field in
-`custom.toml`. Pin it after first boot on the Wi-Fi connection (named after the SSID):
-
-```bash
-sudo nmcli connection modify 'YOUR_SSID' \
-    ipv4.method manual \
-    ipv4.addresses 192.168.0.105/24 \
-    ipv4.gateway 192.168.0.1 \
-    ipv4.dns "192.168.0.1 8.8.8.8"
-sudo nmcli connection up 'YOUR_SSID'
-```
-
-!!! tip "Belt and braces for a monitor-less box"
-    Also add a **DHCP reservation** on the router (MAC → 192.168.0.105). The Wi-Fi MAC
-    is `cat /sys/class/net/wlan0/address`. On-device static + router reservation agree
-    on the same address, so nothing else can grab it and a wrong static config can't
-    strand the Pi.
+Raspberry Pi OS uses **NetworkManager**, so pin the address with `nmcli` (there's no
+static-IP field in `custom.toml`) — use `192.168.0.105/24`, gateway `192.168.0.1`, and
+add a matching **router DHCP reservation**. Full steps →
+[How to set a static IP with NetworkManager (nmcli)](../../FAQ/static-ip-with-networkmanager.md).
 
 ## 6. Base upgrade
 

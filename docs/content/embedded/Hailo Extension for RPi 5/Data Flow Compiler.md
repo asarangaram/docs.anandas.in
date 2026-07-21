@@ -1,6 +1,10 @@
 ---
 title: Data Flow Compiler
 tags:
+  - hailo
+  - ai
+  - hef
+  - dataflow-compiler
   - todo
 ---
 

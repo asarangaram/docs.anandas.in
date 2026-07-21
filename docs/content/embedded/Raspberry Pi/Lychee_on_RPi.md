@@ -1,6 +1,13 @@
 ---
 title: Hosting Lychee on a Raspberry Pi
 weight: 320000
+tags:
+  - raspberry-pi
+  - ubuntu
+  - lychee
+  - self-hosting
+  - web-server
+  - storage
 ---
 
 - [Hardware Required](#hardware-required)

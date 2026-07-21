@@ -1,6 +1,11 @@
 ---
 title: AI on Raspberry Pi
 tags:
+  - raspberry-pi
+  - hailo
+  - ai
+  - ubuntu
+  - setup
   - todo
 ---
 

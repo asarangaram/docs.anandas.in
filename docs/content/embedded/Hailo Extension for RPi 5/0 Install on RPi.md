@@ -1,3 +1,14 @@
+---
+title: Install Hailo + DeGirum on Raspberry Pi
+tags:
+  - raspberry-pi
+  - raspberry-pi-os
+  - hailo
+  - ai
+  - degirum
+  - setup
+---
+
 # Installation on Raspberry Pi
 ## Vim
 The Vi Editor is older, install Vim

@@ -1,3 +1,10 @@
+---
+title: Hailo AI Processors
+tags:
+  - hailo
+  - ai
+  - hardware
+---
 
 # [Hailo AI Processors](https://hailo.ai)
 

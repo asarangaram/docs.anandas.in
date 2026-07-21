@@ -1,6 +1,12 @@
 ---
 title: Lychee as Photo Manager
 weight: 330000
+tags:
+  - raspberry-pi
+  - ubuntu
+  - lychee
+  - self-hosting
+  - web-server
 ---
 
 Lychee is a free photo-management tool, which runs on your server. [^1] [^2]

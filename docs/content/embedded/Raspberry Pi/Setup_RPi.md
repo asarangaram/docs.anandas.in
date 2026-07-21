@@ -1,6 +1,13 @@
 ---
 title: Setup Raspberry Pi
 weight: 310000
+tags:
+  - raspberry-pi
+  - ubuntu
+  - setup
+  - networking
+  - web-server
+  - storage
 ---
 # Setup RPi
 ## Hardware Required

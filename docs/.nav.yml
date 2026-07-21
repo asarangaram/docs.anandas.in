@@ -4,7 +4,6 @@ nav:
   - Today I learned on tech:
       - index.md
       - tags.md
-      - worklog
       - Help - read before editing: help.md
   - content/linux-admin
   - content/linux-develop

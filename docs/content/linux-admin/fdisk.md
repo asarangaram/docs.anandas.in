@@ -83,6 +83,12 @@ Append as follows:
 
 Save and close the file. 
 
+!!! tip "Add `nofail` so a missing disk can't hang boot"
+    On a headless machine, if the disk is absent or fails to mount, plain `defaults` can
+    stall boot at an emergency prompt with no console to recover. Add `nofail` (plus
+    `x-systemd.device-timeout=10` on systemd) so boot always continues, e.g.
+    `/dev/sdb1 /disk1 ext3 defaults,nofail,x-systemd.device-timeout=10 1 2`.
+
 Task: Label the partition 
 
 You can label the partition using e2label. For example, if you want to label the new partition /backup, enter 

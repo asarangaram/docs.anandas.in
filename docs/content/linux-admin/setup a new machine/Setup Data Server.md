@@ -41,4 +41,14 @@ this will work for ethernet too
 /dev/disk/by-uuid/a36d3595-ef77-4f2b-96ab-8d1db1caa691 /disks/nvm_bkup  ext4  defaults,noatime,nodiratime,errors=remount-ro,nodev,nosuid,noexec  0 2
 /dev/disk/by-uuid/cb9f2f7b-cf68-40fb-b30e-dac9f223a156 /disks/sata_bkup ext4  defaults,noatime,nodiratime,errors=remount-ro,nodev,nosuid,noexec  0 2
 ```
+
+!!! tip "Add `nofail` so a missing disk can't hang boot"
+    On a headless box, a disk that is absent or fails to mount can stall boot at an
+    emergency prompt with no console to recover from. Add `nofail` so boot continues
+    regardless, and `x-systemd.device-timeout=10` to skip the long wait — especially
+    for removable (USB) or non-critical disks:
+
+    ```
+    /dev/disk/by-uuid/<uuid> /disks/data ext4  defaults,noatime,nofail,x-systemd.device-timeout=10  0 2
+    ```
 * 

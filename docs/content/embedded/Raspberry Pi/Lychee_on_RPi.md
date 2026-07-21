@@ -351,6 +351,16 @@ Open the file /etc/fstab and add the following line.
 
 This will make sure the device is registered in the file system table and mounted during boot.
 
+!!! tip "Add `nofail` so a missing disk can't hang a headless boot"
+    With plain `defaults`, if the disk is absent or fails the boot can stall at an
+    emergency prompt — fatal on a **headless** box with no console. Use
+    `defaults,nofail` (and, on systemd, `x-systemd.device-timeout=10` to skip the long
+    wait):
+
+    ```bash
+        LABEL=data /data ext3 defaults,nofail,x-systemd.device-timeout=10 0 1
+    ```
+
 **Recommendation**: Restart once to confirm that the auto mount works
 
 ## Setting up Lychee

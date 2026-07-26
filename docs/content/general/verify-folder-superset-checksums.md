@@ -3,6 +3,8 @@ tags:
   - checksums
   - backup
   - rsync
+  - jdupes
+  - deduplication
   - linux
   - how-to
 ---
@@ -84,6 +86,87 @@ rsync -av --ignore-existing /path/to/OLD/ /path/to/NEW/
 
 `--ignore-existing` skips any path already present in `NEW`, so it can't clobber
 the files that came back `OK` or the ones you resolved as conflicts.
+
+## Gotcha: "same size + same date" is NOT "same content"
+
+`sha256sum -c` compares bytes, so it catches a class of duplicates a faster
+metadata check silently gets wrong. Real cases that bit me:
+
+- A SQLite database (a Calibre e-book library) looked **newer** on the copy I
+  planned to keep — but it was **empty** (0 books), while the "old" copy held all
+  1,388. Keeping by timestamp would have thrown the real library away.
+- Two versions of a photo had the **exact same byte size** but different content.
+  A size-only comparison calls them identical; the hash does not.
+- Worse: I'd earlier run `touch -r old new` to tidy up mismatched timestamps —
+  which made two genuinely *different* files share the same size **and** mtime.
+  Any tool trusting size+mtime (including rsync's default quick check) would now
+  treat them as identical and skip them.
+
+The rule: **for anything irreplaceable, trust the checksum, not the timestamp or
+size.** Use metadata only to *narrow* the candidates, never to decide a deletion.
+
+## Scope cheaply first, verify by content second
+
+Hashing terabytes is slow, so don't hash everything blindly — a fast metadata pass
+finds the *candidates*, and the content check confirms only those:
+
+1. **`rsync -avni OLD/ NEW/`** (dry-run, itemize) — size+mtime only, no reads.
+   `>f+++++++++` = missing from NEW; `>f.st.....` / `>f..t.....` = exists but
+   differs. That's your shortlist.
+2. **`sha256sum -c`** the shortlist (or the whole tree, if small) to confirm which
+   are *really* identical vs. a size coincidence.
+
+You read the tree once to hash, but only have to *think* about the handful of files
+metadata flagged as different.
+
+## When the folders are reorganized: anchor the `-c`, or go path-independent
+
+`sha256sum -c` matches by **relative path**. If the two trees hold the same files
+under a **different folder layout**, the path-based check reports everything as
+missing even though the content is identical. Two ways out:
+
+- **Anchor at the matching sub-level.** If `A/Datewise/…` mirrors
+  `B/nalini/DateWise/…`, generate the sums from `A/Datewise` and run `-c` from
+  `B/nalini/DateWise` — now the relative paths line up (only the top folder
+  name/case differed).
+- **Compare by content hash, ignoring paths entirely** — check the old hash set is
+  a subset of the new:
+  ```sh
+  cd OLD; find . -type f -print0 | sort -z | xargs -0 sha256sum | awk '{print $1}' | sort -u > /tmp/old.h
+  cd NEW; find . -type f -print0 | sort -z | xargs -0 sha256sum | awk '{print $1}' | sort -u > /tmp/new.h
+  comm -23 /tmp/old.h /tmp/new.h    # hashes in OLD but not NEW = would be lost
+  ```
+  Empty output → every old file's content exists somewhere in NEW, wherever it was
+  filed.
+
+## Or use `jdupes` — but know its cost
+
+For path-independent dedup, [`jdupes`](https://github.com/jbruchon/jdupes) finds
+byte-identical files across trees and can delete them in place:
+
+```sh
+# keep the master (first param), delete duplicates only from the copy:
+jdupes -r -O --isolate -d -N MASTER COPY
+```
+
+- `-O` (paramorder) → the first path listed is the preferred **keeper**.
+- `--isolate` → only match *across* the given paths, never within one, so the copy
+  can't lose a file the master doesn't also have.
+- `-d -N` → delete duplicates without prompting, keeping the preferred one.
+- jdupes always keeps **one** copy of each identical set, so no unique content is
+  ever lost — the only question is *which* copy survives (that's what `-O` controls).
+
+Trade-off vs. a plain hash pass: jdupes verifies matches with a **final
+byte-for-byte comparison** that *re-reads* the matched files — roughly 1.5× the I/O
+of hashing each side once. On a spinning disk full of small photos that's the
+difference between a couple of hours and an overnight run. Use the hash-set method
+when you just need the answer; use jdupes when you want it to do the deletion too.
+
+Note: jdupes hides its progress bar when its output isn't a terminal, so
+`jdupes … 2>&1 | tee log` shows nothing until the end. Send results to the file but
+leave stderr on the terminal instead: `jdupes … > jdupes.log` — the live progress
+stays visible. (To watch a run that's *already* piped, sample bytes read from
+`/proc/$(pgrep -x jdupes)/io`.)
 
 ## Notes
 

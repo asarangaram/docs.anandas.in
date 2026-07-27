@@ -5,6 +5,8 @@ tags:
   - rsync
   - jdupes
   - deduplication
+  - exiftool
+  - photos
   - linux
   - how-to
 ---
@@ -167,6 +169,44 @@ Note: jdupes hides its progress bar when its output isn't a terminal, so
 leave stderr on the terminal instead: `jdupes … > jdupes.log` — the live progress
 stays visible. (To watch a run that's *already* piped, sample bytes read from
 `/proc/$(pgrep -x jdupes)/io`.)
+
+## Photos: hash the pixels, not the file, to catch "same image, different EXIF"
+
+A whole-file checksum (and jdupes, and any byte compare) treats two copies of the *same
+photo* as different the moment their metadata differs by one byte — a rewritten
+timestamp, a stripped GPS tag, an orientation flag. So a de-dup by file hash leaves
+thousands of near-identical photos behind. To compare only the **image data**, strip the
+metadata on the fly and hash what's left:
+
+```sh
+pixhash() { exiftool -all= -o - "$1" 2>/dev/null | sha256sum | cut -d' ' -f1; }
+[ "$(pixhash a.jpg)" = "$(pixhash b.jpg)" ] && echo "same image (metadata aside)"
+```
+
+`exiftool -all= -o -` writes a metadata-stripped copy to stdout without touching the
+original; the hash of that is stable across EXIF-only differences. This is what turns
+"same size, same day, different bytes" from an unresolved conflict into a confident
+drop-the-duplicate.
+
+Confirming the difference *is* only metadata: `cmp` the two files and check the first
+differing byte — if it's near the front (in the EXIF header) and the pixel hashes match,
+the images are identical and only the tags differ.
+
+## Gotcha: exiftool's own `*_original` backups
+
+When exiftool edits a file in place without `-overwrite_original`, it renames the
+pre-edit copy to `name.ext_original` (e.g. `IMG_1234.jpg_original`). After a big metadata
+pass you can be left with thousands of these. They're **redundant only if the edited
+sibling still exists** — check before deleting:
+
+```sh
+find . -type f -name '*_original' | while IFS= read -r f; do
+  [ -e "${f%_original}" ] || echo "ORPHAN: $f"   # no sibling -> the only copy, keep it
+done
+```
+
+Since exiftool only writes them on *metadata* edits, each `_original` is pixel-identical
+to its sibling — safe to bulk-delete once you've confirmed none are orphans.
 
 ## Notes
 

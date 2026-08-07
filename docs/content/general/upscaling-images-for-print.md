@@ -114,3 +114,9 @@ interpolation comparison, `im.resize((w*4, h*4), Image.LANCZOS)` is a one-liner.
   doesn't contain. Start from the best original you have, not a small re-save.
 - **Check the size before printing, not after.** Do the DPI division first —
   it tells you whether you need 2× or 4× before you spend time on the pass.
+
+## See also
+
+- [Super-resolution on the Pi 5 — CPU vs GPU vs Hailo](../embedded/Hailo Extension for RPi 5/Super-resolution on RPi 5 - CPU vs GPU vs Hailo.md)
+  — running the same upscaling on an edge box: what worked, what didn't (the Pi's
+  GPU can't), and how the Hailo NPU compares once a `dkms` gotcha is sorted.
